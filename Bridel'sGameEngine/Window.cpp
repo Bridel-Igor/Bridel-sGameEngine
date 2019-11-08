@@ -104,6 +104,27 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		return 0;
+
+	// clear keystate when window loses focus to prevent input getting from zombie keys
+	case WM_KILLFOCUS:
+		kbd.clearState();
+		break;
+
+	// keyboard messages
+	case WM_KEYDOWN:
+	// syskey commands need to be handled to track ALT key (VK_MENU)
+	case WM_SYSKEYDOWN:
+		if (!(lParam & 0x40000000) || kbd.autorepeatIsEnabled())
+			kbd.onKeyPressed(static_cast<unsigned char>(wParam));
+		break;
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+		kbd.onKeyReleased(static_cast<unsigned char>(wParam));
+		break;
+	case WM_CHAR:
+		kbd.onChar(static_cast<unsigned char>(wParam));
+		break;
+	// end of keyboard messages
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);

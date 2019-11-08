@@ -4,6 +4,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	try {
 		Window window(640, 480, "Form");
+		window.kbd.disableAutorepeat();
 
 		MSG msg;
 		BOOL gResult;
@@ -11,6 +12,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+			// if (window.kbd.keyIsPressed(VK_MENU)) // use it for keyboard events
 		}
 
 		if (gResult == -1)

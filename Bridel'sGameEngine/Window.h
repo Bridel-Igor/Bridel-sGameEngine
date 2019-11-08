@@ -2,6 +2,7 @@
 
 #include "WindowsInclude.h"
 #include "ExceptionFinder.h"
+#include "Keyboard.h"
 
 class Window
 {
@@ -47,6 +48,7 @@ public:
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
+	Keyboard kbd;
 };
 
 // error exception helper macro
