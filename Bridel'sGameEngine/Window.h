@@ -1,9 +1,23 @@
 #pragma once
 
 #include "WindowsInclude.h"
+#include "ExceptionFinder.h"
 
 class Window
 {
+public:
+	class WindowException : public ExceptionFinder
+	{
+	public:
+		WindowException(int line, const char* file, HRESULT hr) noexcept;
+		const char* what() const noexcept override;
+		virtual const char* getType() const noexcept;
+		static std::string translateErrorCode(HRESULT hr) noexcept;
+		HRESULT getErrorCode() const noexcept;
+		std::string getErrorString() const noexcept;
+	private:
+		HRESULT hr;
+	};
 private:
 	// singleton manages registration/cleanup of window class
 	class WindowClass
@@ -34,3 +48,7 @@ public:
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 };
+
+// error exception helper macro
+#define WND_EXCEPT(hr) Window::WindowException(__LINE__, __FILE__, hr)
+#define WND_LAST_EXCEPT() Window::WindowException(__LINE__, __FILE__, GetLastError())
