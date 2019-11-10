@@ -78,6 +78,28 @@ void Window::setTitle(const std::string& title)
 		throw WND_LAST_EXCEPT();
 }
 
+std::optional<int> Window::processMessages()
+{
+	MSG msg;
+	// while queue has messages, remove and dispatch them (but do not block processing)
+	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	{
+		// check for quit because peekmessage does not signal this via return
+		if (msg.message == WM_QUIT)
+		{
+			// return optional wrapping int (arg to PostQuitMessage is in wParam)
+			return msg.wParam;
+		}
+
+		// TranslateMessage will post auhilliary WM_CHAR messages from key msgs
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	// return empty optional when not quitting app
+	return {};
+}
+
 LRESULT WINAPI Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
 	// use create parameter passed in form CreateWindow() to store window class pointer

@@ -4,6 +4,7 @@
 #include "ExceptionFinder.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include <optional>
 
 class Window
 {
@@ -50,6 +51,7 @@ public:
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	void setTitle(const std::string&);
+	static std::optional<int> processMessages();
 
 	Keyboard kbd;
 	Mouse mouse;
