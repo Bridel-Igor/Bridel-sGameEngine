@@ -3,6 +3,7 @@
 #include "WindowsInclude.h"
 #include "ExceptionFinder.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 
 class Window
 {
@@ -48,7 +49,10 @@ public:
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
+	void setTitle(const std::string&);
+
 	Keyboard kbd;
+	Mouse mouse;
 };
 
 // error exception helper macro

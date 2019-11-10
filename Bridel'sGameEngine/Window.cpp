@@ -41,16 +41,18 @@ HINSTANCE Window::WindowClass::getInstance() noexcept
 
 // Window
 Window::Window(int width, int height, const char* name)
+	:
+	width(width),
+	height(height)
 {
-	this->width = width;
-	this->height = height;
 	// calculate window size based on desired client region size
 	RECT wr;
 	wr.left = 100;
 	wr.right = width + wr.left;
 	wr.top = 100;
 	wr.bottom = height + wr.top;
-	AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE) == 0)
+		throw WND_LAST_EXCEPT();
 	// create window & get hWnd
 	hWnd = CreateWindow(
 		WindowClass::getName(), name,
@@ -68,6 +70,12 @@ Window::Window(int width, int height, const char* name)
 Window::~Window()
 {
 	DestroyWindow(hWnd);
+}
+
+void Window::setTitle(const std::string& title)
+{
+	if (SetWindowText(hWnd, title.c_str()) == 0)
+		throw WND_LAST_EXCEPT();
 }
 
 LRESULT WINAPI Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
@@ -125,6 +133,67 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		kbd.onChar(static_cast<unsigned char>(wParam));
 		break;
 	// end of keyboard messages
+
+	// mouse messages
+	case WM_MOUSEMOVE:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		// in client region -> log move, and log enter + capture mouse
+		if (pt.x >= 0 && pt.x < width && width && pt.y >= 0 && pt.y < height)
+		{
+			mouse.onMouseMove(pt.x, pt.y);
+			if (!mouse.isMouseInWindow())
+			{
+				SetCapture(hWnd);
+				mouse.onMouseEnter();
+			}
+		}
+		// not in client -> log move / maintain capture if button down
+		else
+		{
+			if (wParam & (MK_LBUTTON | MK_RBUTTON))
+				mouse.onMouseMove(pt.x, pt.y);
+			// button up -> release capture / log event for leaving
+			else
+			{
+				ReleaseCapture();
+				mouse.onMouseLeave();
+			}
+		}
+		break;
+	}
+	case WM_LBUTTONDOWN:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.onLeftPressed(pt.x, pt.y);
+		break;
+	}
+	case WM_RBUTTONDOWN:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.onRightPressed(pt.x, pt.y);
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.onLeftReleased(pt.x, pt.y);
+		break;
+	}
+	case WM_RBUTTONUP:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.onRightReleased(pt.x, pt.y);
+		break;
+	}
+	case WM_MOUSEWHEEL:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		const int delta = GET_WHEEL_DELTA_WPARAM(wParam);
+		mouse.onWheelDelta(pt.x, pt.y, delta);
+		break;
+	}
+	// end of mouse messages
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);
