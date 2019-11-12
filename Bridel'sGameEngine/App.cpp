@@ -79,4 +79,8 @@ void App::doFrame()
 	oss << "Wheel pos: " << wheelRoll << " ";
 	oss << "String: " << word;
 	wnd.setTitle(oss.str());
+
+	const float c = sin(timer.peek()) / 2.0f + 0.5f;
+	wnd.gfx().clearBuffer(c, c, 1.0f);
+	wnd.gfx().endFrame();
 }

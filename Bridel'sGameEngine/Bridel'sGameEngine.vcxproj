@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\App.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ExceptionFinder.cpp" />
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Graphics.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Keyboard.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Mouse.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Timer.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\App.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ExceptionFinder.h" />
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Graphics.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Keyboard.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Mouse.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Timer.h" />
