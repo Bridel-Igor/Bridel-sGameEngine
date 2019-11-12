@@ -11,17 +11,28 @@
 class Window
 {
 public:
-	class WindowException : public ExceptionFinder
+	class Exception : public ExceptionFinder
+	{
+		using ExceptionFinder::ExceptionFinder;
+	public:
+		static std::string translateErrorCode(HRESULT hr) noexcept;
+	};
+	class HrException : public Exception
 	{
 	public:
-		WindowException(int line, const char* file, HRESULT hr) noexcept;
+		HrException(int line, const char* file, HRESULT hr) noexcept;
 		const char* what() const noexcept override;
-		virtual const char* getType() const noexcept;
-		static std::string translateErrorCode(HRESULT hr) noexcept;
+		virtual const char* getType() const noexcept override;
 		HRESULT getErrorCode() const noexcept;
-		std::string getErrorString() const noexcept;
+		std::string getErrorDescription() const noexcept;
 	private:
 		HRESULT hr;
+	};
+	class NoGfxException : public Exception
+	{
+	public:
+		using Exception::Exception;
+		const char* getType() const noexcept override;
 	};
 private:
 	// singleton manages registration/cleanup of window class
@@ -62,5 +73,6 @@ public:
 };
 
 // error exception helper macro
-#define WND_EXCEPT(hr) Window::WindowException(__LINE__, __FILE__, hr)
-#define WND_LAST_EXCEPT() Window::WindowException(__LINE__, __FILE__, GetLastError())
+#define WND_EXCEPT(hr) Window::HrException(__LINE__, __FILE__, hr)
+#define WND_LAST_EXCEPT() Window::HrException(__LINE__, __FILE__, GetLastError())
+#define WND_NOGFX_EXCEPT() Window::NoGfxException(__LINE__, __FILE__)
