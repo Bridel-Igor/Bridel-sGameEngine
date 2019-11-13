@@ -28,12 +28,6 @@ DxgiInfoManager::DxgiInfoManager()
 	GFX_THROW_NOINFO(DxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), &pDxgiInfoQueue));
 }
 
-DxgiInfoManager::~DxgiInfoManager()
-{
-	if (pDxgiInfoQueue != nullptr)
-		pDxgiInfoQueue->Release();
-}
-
 void DxgiInfoManager::set() noexcept
 {
 	// set the index (next) so that the next all to getMessages()
