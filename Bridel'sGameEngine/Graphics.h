@@ -5,6 +5,7 @@
 #include <wrl.h>
 #include <vector>
 #include "DxgiInfoManager.h"
+#include "GraphicsThrowMacros.h"
 
 class Graphics
 {
@@ -27,6 +28,16 @@ public:
 		HRESULT hr;
 		std::string info;
 	};
+	class InfoException : public Exception
+	{
+	public:
+		InfoException(int line, const char* file, std::vector<std::string> infoMsgs = {}) noexcept;
+		const char* what() const noexcept override;
+		const char* getType() const noexcept override;
+		std::string getErrorInfo() const noexcept;
+	private:
+		std::string info;
+	};
 	class DeviceRemovedException : public HrException
 	{
 		using HrException::HrException;
@@ -41,6 +52,7 @@ public:
 	~Graphics() = default;
 	void endFrame();
 	void clearBuffer(float red, float green, float blue) noexcept;
+	void drawTestTriangle();
 private:
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;

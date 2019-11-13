@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{af0bf659-77cd-42ec-bce8-45948d6f6eea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxgiInfoManager">
+      <UniqueIdentifier>{757d2f9a-92eb-4b5b-8392-ef40f416b190}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\WinMain.cpp">
@@ -39,11 +45,11 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Graphics.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\dxerr.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DxgiInfoManager.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>DxgiInfoManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\dxerr.cpp">
+      <Filter>DxgiInfoManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,13 +89,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXGetErrorDescription.inl">
-      <Filter>Исходные файлы</Filter>
+      <Filter>DxgiInfoManager</Filter>
     </None>
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXGetErrorString.inl">
-      <Filter>Исходные файлы</Filter>
+      <Filter>DxgiInfoManager</Filter>
     </None>
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXTrace.inl">
-      <Filter>Исходные файлы</Filter>
+      <Filter>DxgiInfoManager</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\VertexShader.hsls">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PixelShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

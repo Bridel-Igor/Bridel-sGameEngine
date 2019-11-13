@@ -82,5 +82,6 @@ void App::doFrame()
 
 	const float c = sin(timer.peek()) / 2.0f + 0.5f;
 	wnd.gfx().clearBuffer(c, c, 1.0f);
+	wnd.gfx().drawTestTriangle();
 	wnd.gfx().endFrame();
 }
