@@ -82,6 +82,10 @@ void App::doFrame()
 
 	const float c = sin(timer.peek()) / 2.0f + 0.5f;
 	wnd.gfx().clearBuffer(c, c, 1.0f);
-	wnd.gfx().drawTestTriangle(timer.peek());
+	wnd.gfx().drawTestTriangle(
+		timer.peek(),
+		wnd.mouse.getPosX() / 360.0f - 1.0f,
+		-wnd.mouse.getPosY() / 240.0f + 1.0f
+	);
 	wnd.gfx().endFrame();
 }

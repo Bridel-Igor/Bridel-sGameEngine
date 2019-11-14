@@ -52,7 +52,7 @@ public:
 	~Graphics() = default;
 	void endFrame();
 	void clearBuffer(float red, float green, float blue) noexcept;
-	void drawTestTriangle(float angle);
+	void drawTestTriangle(float angle, float x, float y);
 private:
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
