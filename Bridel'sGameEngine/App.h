@@ -17,5 +17,4 @@ private:
 	int wheelRoll = 0, x = 0, y = 0;//
 	bool mouseInClient = false;//
 	std::string word;//
-	
 };
