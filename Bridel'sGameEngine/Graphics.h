@@ -4,11 +4,15 @@
 #include <d3d11.h>
 #include <wrl.h>
 #include <vector>
+#include <memory>
+#include <random>
+#include <d3dcompiler.h>
+#include <DirectXMath.h>
 #include "DxgiInfoManager.h"
-#include "GraphicsThrowMacros.h"
 
 class Graphics
 {
+	friend class Bindable;
 public:
 	class Exception : public ExceptionFinder
 	{
@@ -52,8 +56,11 @@ public:
 	~Graphics() = default;
 	void endFrame();
 	void clearBuffer(float red, float green, float blue) noexcept;
-	void drawTestTriangle(float angle, float x, float y);
+	void drawIndexed(UINT count) noexcept(!IS_DEBUG);
+	void setProjection(DirectX::FXMMATRIX proj) noexcept;
+	DirectX::XMMATRIX getProjection() const noexcept;
 private:
+	DirectX::XMMATRIX projection;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
 #endif

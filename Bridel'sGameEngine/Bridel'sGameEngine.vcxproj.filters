@@ -16,8 +16,23 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{af0bf659-77cd-42ec-bce8-45948d6f6eea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DxgiInfoManager">
+    <Filter Include="Файлы заголовков\Macros">
+      <UniqueIdentifier>{2f1493b0-5db6-4a24-8fdf-dcf9a119f6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dxerr">
       <UniqueIdentifier>{757d2f9a-92eb-4b5b-8392-ef40f416b190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Bindable">
+      <UniqueIdentifier>{e506c633-494f-44d3-afd8-b2d2893af1aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Drawable">
+      <UniqueIdentifier>{e2c21384-e4e9-4ab1-9772-94c74a60040d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Bindable">
+      <UniqueIdentifier>{c94a7b88-3db3-4c25-93d5-5718cdf452c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Drawable">
+      <UniqueIdentifier>{bef88a22-95a1-4bbd-9e14-b1e41f3cacb7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,10 +61,40 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\dxerr.cpp">
-      <Filter>DxgiInfoManager</Filter>
+      <Filter>Dxerr</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DxgiInfoManager.cpp">
       <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Topology.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Bindable.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\IndexBuffer.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\InputLayout.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PixelShader.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\VertexBuffer.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\VertexShader.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TransformCbuf.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Drawable.cpp">
+      <Filter>Исходные файлы\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Box.cpp">
+      <Filter>Исходные файлы\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,22 +125,61 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DxgiInfoManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\GraphicsThrowMacros.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\dxerr.h">
-      <Filter>DxgiInfoManager</Filter>
+      <Filter>Dxerr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\GraphicsThrowMacros.h">
+      <Filter>Файлы заголовков\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\WindowsThrowMacros.h">
+      <Filter>Файлы заголовков\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Bindable.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Topology.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\BindableBase.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\IndexBuffer.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\InputLayout.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PixelShader.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\VertexBuffer.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\VertexShader.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ConstantBuffers.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TransformCbuf.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Drawable.h">
+      <Filter>Файлы заголовков\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Box.h">
+      <Filter>Файлы заголовков\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXGetErrorDescription.inl">
-      <Filter>DxgiInfoManager</Filter>
+      <Filter>Dxerr</Filter>
     </None>
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXGetErrorString.inl">
-      <Filter>DxgiInfoManager</Filter>
+      <Filter>Dxerr</Filter>
     </None>
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXTrace.inl">
-      <Filter>DxgiInfoManager</Filter>
+      <Filter>Dxerr</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -16,3 +16,11 @@
 #define GFX_DEVICE_REMOVED_EXCEPT(hr) Graphics::DeviceRemovedException(__LINE__, __FILE__, hr)
 #define GFX_THROW_INFO_ONLY(call) (call)
 #endif
+
+// macro for importing infoManager into local scope
+// this.getInfoManager(Graphisc& gfx) must exist
+#ifdef NDEBUG
+#define INFOMAN(gfx) HRESULT hr
+#else
+#define INFOMAN(gfx) HRESULT hr; DxgiInfoManager& infoManager = getInfoManager((gfx))
+#endif
