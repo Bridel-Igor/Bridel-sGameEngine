@@ -1,4 +1,5 @@
 #include "Bindable.h"
+#include <stdexcept>
 
 ID3D11DeviceContext* Bindable::getContext(Graphics& gfx) noexcept
 {
@@ -10,7 +11,7 @@ ID3D11Device* Bindable::getDevice(Graphics& gfx) noexcept
 	return gfx.pDevice.Get();
 }
 
-DxgiInfoManager& Bindable::getInfoManager(Graphics& gfx) noexcept(!IS_DEBUG)
+DxgiInfoManager& Bindable::getInfoManager(Graphics& gfx) noexcept(IS_DEBUG)
 {
 #ifndef NDEBUG
 	return gfx.infoManager;

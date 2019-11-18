@@ -1,15 +1,16 @@
-#include "Box.h"
+#include "Melon.h"
 #include "BindableBase.h"
 #include "GraphicsThrowMacros.h"
-#include "Cube.h"
+#include "Sphere.h"
 
-Box::Box(Graphics& gfx, 
-	std::mt19937& rng, 
-	std::uniform_real_distribution<float>& adist, 
-	std::uniform_real_distribution<float>& ddist, 
-	std::uniform_real_distribution<float>& odist, 
+Melon::Melon(Graphics& gfx,
+	std::mt19937& rng,
+	std::uniform_real_distribution<float>& adist,
+	std::uniform_real_distribution<float>& ddist,
+	std::uniform_real_distribution<float>& odist,
 	std::uniform_real_distribution<float>& rdist,
-	std::uniform_real_distribution<float>& bdist)
+	std::uniform_int_distribution<int>& longdist,
+	std::uniform_int_distribution<int>& latdist)
 	:
 	r(rdist(rng)),
 	droll(ddist(rng)),
@@ -23,23 +24,14 @@ Box::Box(Graphics& gfx,
 	phi(adist(rng))
 {
 	namespace dx = DirectX;
+
 	if (!isStaticInitialized())
 	{
-		struct Vertex
-		{
-			dx::XMFLOAT3 pos;
-		};
-		auto model = Cube::make<Vertex>();
-		model.transform(dx::XMMatrixScaling(1.0f, 1.0f, 1.2f));
-		addStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
-
 		auto pvs = std::make_unique<VertexShader>(gfx, L"ColorIndexVS.cso");
 		auto pvsbc = pvs->getByteCode();
 		addStaticBind(std::move(pvs));
 
 		addStaticBind(std::make_unique<PixelShader>(gfx, L"ColorIndexPS.cso"));
-
-		addStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
 
 		struct PixelShaderConstants
 		{
@@ -74,18 +66,23 @@ Box::Box(Graphics& gfx,
 
 		addStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	}
-	else
-		setIndexFromStatic();
-	addBind(std::make_unique<TransformCbuf>(gfx, *this));
+	
+	struct Vertex
+	{
+		dx::XMFLOAT3 pos;
+	};
+	auto model = Sphere::makeTesselated<Vertex>(latdist(rng), longdist(rng));
+	// deform verticies of model by linear transformation
+	model.transform(dx::XMMatrixScaling(1.0f, 1.0f, 1.2f));
 
-	// model deformation transform (per instance, not stored as bind)
-	dx::XMStoreFloat3x3(
-		&mt,
-		dx::XMMatrixScaling(1.0f, 1.0f, bdist(rng))
-	);
+	addBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
+
+	addIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
+
+	addBind(std::make_unique<TransformCbuf>(gfx, *this));
 }
 
-void Box::update(float dt) noexcept
+void Melon::update(float dt) noexcept
 {
 	roll += droll * dt;
 	pitch += dpitch * dt;
@@ -95,11 +92,10 @@ void Box::update(float dt) noexcept
 	chi += dchi * dt;
 }
 
-DirectX::XMMATRIX Box::getTransformXM() const noexcept
+DirectX::XMMATRIX Melon::getTransformXM() const noexcept
 {
-	namespace dx = DirectX;
-	return dx::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
-		dx::XMMatrixTranslation(r, 0.0f, 0.0f) *
-		dx::XMMatrixRotationRollPitchYaw(theta, phi, chi) *
-		dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
+	return DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
+		DirectX::XMMatrixTranslation(r, 0.0f, 0.0f) *
+		DirectX::XMMatrixRotationRollPitchYaw(theta, phi, chi) *
+		DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
 }
