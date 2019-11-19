@@ -1,9 +1,5 @@
 #include "App.h"
-#include "Melon.h"
-#include "Pyramid.h"
 #include "Box.h"
-#include "Sheet.h"
-#include "SkinnedBox.h"
 #include <sstream>
 #include <iomanip>
 #include <memory>
@@ -19,7 +15,8 @@ GDIPlusManager gdipm;
 
 App::App()
 	:
-	wnd(720, 480, "Bridel'sGameEngine")
+	wnd(720, 480, "Bridel'sGameEngine"),
+	light(wnd.gfx())
 {
 	class Factory
 	{
@@ -30,22 +27,9 @@ App::App()
 		{}
 		std::unique_ptr<Drawable> operator()()
 		{
-			switch (typedist(rng))
-			{
-			case 0:
-				return std::make_unique<Pyramid>(gfx, rng, adist, ddist, odist, rdist);
-			case 1:
-				return std::make_unique<Box>(gfx, rng, adist, ddist, odist, rdist, bdist);
-			case 2:
-				return std::make_unique<Melon>(gfx, rng, adist, ddist, odist, rdist, longdist, latdist);
-			case 3: 
-				return std::make_unique<Sheet>(gfx, rng, adist, ddist, odist, rdist);
-			case 4:
-				return std::make_unique<SkinnedBox>(gfx, rng, adist, ddist, odist, rdist);
-			default:
-				assert(false && "bad drawable type in factory");
-				return {};
-			}
+			return std::make_unique<Box>(
+				gfx, rng, adist, ddist, odist, rdist, bdist
+			);
 		}
 	private:
 		Graphics& gfx;
@@ -55,9 +39,6 @@ App::App()
 		std::uniform_real_distribution<float> odist{ 0.0f, PI * 0.08f };
 		std::uniform_real_distribution<float> rdist{ 6.0f, 20.0f };
 		std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
-		std::uniform_int_distribution<int> latdist{ 5, 20 };
-		std::uniform_int_distribution<int> longdist{ 10, 40 };
-		std::uniform_int_distribution<int> typedist{ 0, 4 };
 	};
 	
 	drawables.reserve(nDrawables);
@@ -97,14 +78,19 @@ void App::doFrame()
 	const auto dt = timer.mark() * speed_factor;
 	wnd.gfx().beginFrame(0.07f, 0.0f, 0.12f);
 	wnd.gfx().setCamera(cam.getMatrix());
+	light.bind(wnd.gfx());
 
 	for (auto& d : drawables)
 	{
 		d->update(wnd.kbd.keyIsPressed(VK_SPACE) ? 0.0f : dt);
 		d->draw(wnd.gfx());
 	}
+	light.draw(wnd.gfx());
 
 	static char buffer[1024];
+	// imgui windows to control camera and light
+	cam.spawnControlWindow();
+	light.spawnControlWindow();
 	// imgui window to control simulation speed
 	if (ImGui::Begin("Simulation Speed"))
 	{
@@ -113,8 +99,6 @@ void App::doFrame()
 		ImGui::Text("Status: %s", wnd.kbd.keyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING");
 	}
 	ImGui::End();
-	// imgui window to control camera
-	cam.spawnControlWindow();
 
 	// present
 	wnd.gfx().endFrame();
