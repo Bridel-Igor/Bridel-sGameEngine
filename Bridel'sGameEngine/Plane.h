@@ -41,16 +41,16 @@ public:
 			}
 		}
 
-		std::vector<unsigned int> indices;
+		std::vector<unsigned short> indices;
 		indices.reserve(sq(divisions_x * divisions_y) * 6);
 		{
 			const auto vxy2i = [nVertices_x](size_t x, size_t y)
 			{
 				return (unsigned short)(y * nVertices_x + x);
 			};
-			for (size_t y = 0; y < divisions_y; y++)
+			for (size_t y = 0u; y < (size_t)divisions_y; y++)
 			{
-				for (size_t x = 0; x < divisions_x; x++)
+				for (size_t x = 0u; x < (size_t)divisions_x; x++)
 				{
 					const std::array<unsigned short, 4> indexArray =
 					{ vxy2i(x, y), vxy2i(x + 1, y), vxy2i(x, y + 1), vxy2i(x + 1, y + 1) };
@@ -64,7 +64,7 @@ public:
 			}
 		}
 
-		return{ std::move(vertices), std::move(indices) };
+		return { std::move(vertices), std::move(indices) };
 	}
 	template<class V>
 	static IndexedTriangleList<V> make()
