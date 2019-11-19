@@ -12,7 +12,9 @@ void TransformCbuf::bind(Graphics& gfx) noexcept
 {
 	pVcbuf->update(gfx,
 		DirectX::XMMatrixTranspose(
-			parent.getTransformXM() * gfx.getProjection() 
+			parent.getTransformXM() * 
+			gfx.getCamera() *
+			gfx.getProjection() 
 		)
 	);
 	pVcbuf->bind(gfx);

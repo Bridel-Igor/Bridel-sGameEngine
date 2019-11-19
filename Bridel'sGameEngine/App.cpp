@@ -13,6 +13,8 @@
 #include "GDIPlusManager.h"
 #include "ImGui/imgui.h"
 
+namespace dx = DirectX;
+
 GDIPlusManager gdipm;
 
 App::App()
@@ -61,7 +63,7 @@ App::App()
 	drawables.reserve(nDrawables);
 	std::generate_n(std::back_inserter(drawables), nDrawables, Factory{wnd.gfx()});
 
-	wnd.gfx().setProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 480.0f / 720.0f, 0.5f, 40.0f));
+	wnd.gfx().setProjection(dx::XMMatrixPerspectiveLH(1.0f, 480.0f / 720.0f, 0.5f, 40.0f));
 }
 
 int App::go()
@@ -93,8 +95,8 @@ App::~App()
 void App::doFrame()
 {
 	const auto dt = timer.mark() * speed_factor;
-
 	wnd.gfx().beginFrame(0.07f, 0.0f, 0.12f);
+	wnd.gfx().setCamera(cam.getMatrix());
 
 	for (auto& d : drawables)
 	{
@@ -111,6 +113,8 @@ void App::doFrame()
 		ImGui::Text("Status: %s", wnd.kbd.keyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING");
 	}
 	ImGui::End();
+	// imgui window to control camera
+	cam.spawnControlWindow();
 
 	// present
 	wnd.gfx().endFrame();

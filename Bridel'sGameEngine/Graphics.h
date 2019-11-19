@@ -53,18 +53,21 @@ public:
 	Graphics( HWND hWnd );
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
-	~Graphics() = default;
+	~Graphics();
 	void endFrame();
 	void beginFrame(float red, float green, float blue) noexcept;
 	void drawIndexed(UINT count) noexcept(!IS_DEBUG);
 	void setProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX getProjection() const noexcept;
+	void setCamera(DirectX::FXMMATRIX cam) noexcept;
+	DirectX::XMMATRIX getCamera() const noexcept;
 	void enableImGui() noexcept;
 	void disableImGui() noexcept;
 	bool isImGuiEnabled() const noexcept;
 private:
-	bool imGuiEnabled = true;
 	DirectX::XMMATRIX projection;
+	DirectX::XMMATRIX camera;
+	bool imGuiEnabled = true;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
 #endif

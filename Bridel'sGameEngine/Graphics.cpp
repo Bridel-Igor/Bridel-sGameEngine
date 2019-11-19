@@ -109,6 +109,11 @@ Graphics::Graphics(HWND hWnd)
 	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
 } 
 
+Graphics::~Graphics()
+{
+	ImGui_ImplDX11_Shutdown();
+}
+
 void Graphics::endFrame()
 {
 	// ImGui frame end
@@ -157,6 +162,16 @@ void Graphics::setProjection(DirectX::FXMMATRIX proj) noexcept
 DirectX::XMMATRIX Graphics::getProjection() const noexcept
 {
 	return projection;
+}
+
+void Graphics::setCamera(DirectX::FXMMATRIX cam) noexcept
+{
+	camera = cam;
+}
+
+DirectX::XMMATRIX Graphics::getCamera() const noexcept
+{
+	return camera;
 }
 
 void Graphics::enableImGui() noexcept
