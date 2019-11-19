@@ -162,6 +162,7 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ExceptionFinder.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\GDIPlusManager.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Graphics.cpp" />
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGuiManager.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGui\imgui.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGui\imgui_demo.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGui\imgui_draw.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\GDIPlusManager.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Graphics.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\GraphicsThrowMacros.h" />
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGuiManager.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGui\imconfig.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGui\imgui.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGui\imgui_impl_dx11.h" />

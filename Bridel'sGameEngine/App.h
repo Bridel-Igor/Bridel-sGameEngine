@@ -1,6 +1,7 @@
 #pragma once
 #include "Window.h"
 #include "Timer.h"
+#include "ImGuiManager.h"
 
 class App
 {
@@ -12,12 +13,10 @@ public:
 private:
 	void doFrame();
 private:
+	ImGuiManager imGui;
 	Window wnd;
 	Timer timer;
 	std::vector<std::unique_ptr<class Drawable>> drawables;
-	static constexpr size_t nDrawables = 280;
-	
-	int wheelRoll = 0, x = 0, y = 0;//
-	bool mouseInClient = false;//
-	std::string word;//
+	bool show_demo_window = true;
+	static constexpr size_t nDrawables = 180;
 };

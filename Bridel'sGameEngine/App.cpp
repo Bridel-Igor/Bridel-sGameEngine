@@ -11,12 +11,13 @@
 #include "MathInclude.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
+#include "ImGui/imgui.h"
 
 GDIPlusManager gdipm;
 
 App::App()
 	:
-	wnd(720, 480, "Form")
+	wnd(720, 480, "Bridel'sGameEngine")
 {
 	class Factory
 	{
@@ -91,58 +92,19 @@ App::~App()
 
 void App::doFrame()
 {
-	if (wnd.kbd.keyIsPressed(VK_ESCAPE))
-		PostQuitMessage(0);
-
-	if (!wnd.kbd.charIsEmpty())
-	{
-		char c = wnd.kbd.readChar().value();
-		if (c != VK_BACK)
-			word = word + c;
-		else
-			if (word.length() > 0)
-				word.erase(word.length() - 1);
-	}
-
-	while (!wnd.mouse.isEmpty())
-	{
-		const auto e = wnd.mouse.read();
-		switch (e.getType())
-		{
-		case Mouse::Event::Type::Leave:
-			mouseInClient = false;
-			break;
-		case Mouse::Event::Type::Enter:
-			mouseInClient = true;
-			break;
-		case Mouse::Event::Type::WheelUp:
-			wheelRoll++;
-			break;
-		case Mouse::Event::Type::WheelDown:
-			wheelRoll--;
-			break;
-		case Mouse::Event::Type::Move:
-			x = e.getPosX();
-			y = e.getPosY();
-			break;
-		}
-	}
-	std::ostringstream oss;
-	if (mouseInClient)
-		oss << "Mouse enter client. ";
-	else
-		oss << "Mouse leave client. ";
-	oss << "Mouse Position: (" << x << "," << y << "). ";
-	oss << "Wheel pos: " << wheelRoll << " ";
-	oss << "String: " << word;
-	wnd.setTitle(oss.str());
-
 	const auto dt = timer.mark();
-	wnd.gfx().clearBuffer(0.07f, 0.0f, 0.12f);
+
+	wnd.gfx().beginFrame(0.07f, 0.0f, 0.12f);
+
 	for (auto& d : drawables)
 	{
 		d->update(wnd.kbd.keyIsPressed(VK_SPACE) ? 0.0f : dt);
 		d->draw(wnd.gfx());
 	}
+
+	if (show_demo_window)
+		ImGui::ShowDemoWindow(&show_demo_window);
+
+	// present
 	wnd.gfx().endFrame();
 }

@@ -147,6 +147,9 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGui\imgui_impl_win32.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGuiManager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\WindowsInclude.h">
@@ -292,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGui\imgui_impl_win32.h">
       <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGuiManager.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
