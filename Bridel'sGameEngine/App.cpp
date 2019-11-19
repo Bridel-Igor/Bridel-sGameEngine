@@ -92,7 +92,7 @@ App::~App()
 
 void App::doFrame()
 {
-	const auto dt = timer.mark();
+	const auto dt = timer.mark() * speed_factor;
 
 	wnd.gfx().beginFrame(0.07f, 0.0f, 0.12f);
 
@@ -102,8 +102,15 @@ void App::doFrame()
 		d->draw(wnd.gfx());
 	}
 
-	if (show_demo_window)
-		ImGui::ShowDemoWindow(&show_demo_window);
+	static char buffer[1024];
+	// imgui window to control simulation speed
+	if (ImGui::Begin("Simulation Speed"))
+	{
+		ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 4.0f);
+		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text("Status: %s", wnd.kbd.keyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING");
+	}
+	ImGui::End();
 
 	// present
 	wnd.gfx().endFrame();

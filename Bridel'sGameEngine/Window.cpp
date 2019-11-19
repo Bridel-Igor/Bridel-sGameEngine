@@ -144,8 +144,12 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 {
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
 		return true;
+	const auto imio = ImGui::GetIO();
+
 	switch (msg)
 	{
+	// we don't want the DefProc to handle this message because
+	// we want our destructor to destroy the window, so return 0 instead of break
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		return 0;
@@ -159,14 +163,23 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_KEYDOWN:
 	// syskey commands need to be handled to track ALT key (VK_MENU)
 	case WM_SYSKEYDOWN:
+		// stifle this keyboard message if ImGui wants to capture
+		if (imio.WantCaptureKeyboard)
+			break;
 		if (!(lParam & 0x40000000) || kbd.autorepeatIsEnabled())
 			kbd.onKeyPressed(static_cast<unsigned char>(wParam));
 		break;
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
+		// stifle this keyboard message if imgui wants to capture
+		if (imio.WantCaptureKeyboard)
+			break;
 		kbd.onKeyReleased(static_cast<unsigned char>(wParam));
 		break;
 	case WM_CHAR:
+		// stifle this keyboard message if imgui wants to capture
+		if (imio.WantCaptureKeyboard)
+			break;
 		kbd.onChar(static_cast<unsigned char>(wParam));
 		break;
 	// end of keyboard messages
@@ -174,6 +187,9 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	// mouse messages
 	case WM_MOUSEMOVE:
 	{
+		// stifle this keyboard message if imgui wants to capture
+		if (imio.WantCaptureKeyboard)
+			break;
 		const POINTS pt = MAKEPOINTS(lParam);
 		// in client region -> log move, and log enter + capture mouse
 		if (pt.x >= 0 && pt.x < width && width && pt.y >= 0 && pt.y < height)
@@ -201,30 +217,51 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	}
 	case WM_LBUTTONDOWN:
 	{
+		SetForegroundWindow(hWnd);
+		// stifle this keyboard message if imgui wants to capture
+		if (imio.WantCaptureKeyboard)
+			break;
 		const POINTS pt = MAKEPOINTS(lParam);
 		mouse.onLeftPressed(pt.x, pt.y);
 		break;
 	}
 	case WM_RBUTTONDOWN:
 	{
+		// stifle this keyboard message if imgui wants to capture
+		if (imio.WantCaptureKeyboard)
+			break;
 		const POINTS pt = MAKEPOINTS(lParam);
 		mouse.onRightPressed(pt.x, pt.y);
 		break;
 	}
 	case WM_LBUTTONUP:
 	{
+		// stifle this keyboard message if imgui wants to capture
+		if (imio.WantCaptureKeyboard)
+			break;
 		const POINTS pt = MAKEPOINTS(lParam);
 		mouse.onLeftReleased(pt.x, pt.y);
+		if (pt.x < 0 || pt.x >= width || pt.y < 0 || pt.y >= height)
+		{
+			ReleaseCapture();
+			mouse.onMouseLeave();
+		}
 		break;
 	}
 	case WM_RBUTTONUP:
 	{
+		// stifle this keyboard message if imgui wants to capture
+		if (imio.WantCaptureKeyboard)
+			break;
 		const POINTS pt = MAKEPOINTS(lParam);
 		mouse.onRightReleased(pt.x, pt.y);
 		break;
 	}
 	case WM_MOUSEWHEEL:
 	{
+		// stifle this keyboard message if imgui wants to capture
+		if (imio.WantCaptureKeyboard)
+			break;
 		const POINTS pt = MAKEPOINTS(lParam);
 		const int delta = GET_WHEEL_DELTA_WPARAM(wParam);
 		mouse.onWheelDelta(pt.x, pt.y, delta);
