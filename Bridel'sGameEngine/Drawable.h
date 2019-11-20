@@ -16,6 +16,14 @@ public:
 	virtual void update(float dt) noexcept = 0;
 	virtual ~Drawable() = default;
 protected:
+	template<class T>
+	T* queryBindable() noexcept
+	{
+		for (auto& pb : binds)
+			if (auto pt = dynamic_cast<T*>(pb.get()))
+				return pt;
+		return nullptr;
+	}
 	void addBind(std::unique_ptr<Bindable> bind) noexcept(!IS_DEBUG);
 	void addIndexBuffer(std::unique_ptr<class IndexBuffer> ibuf) noexcept(!IS_DEBUG);
 private:
