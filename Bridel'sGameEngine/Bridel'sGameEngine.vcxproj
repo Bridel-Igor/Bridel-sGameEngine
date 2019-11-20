@@ -157,6 +157,7 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Bindable.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Box.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Camera.cpp" />
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cylinder.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Drawable.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\dxerr.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DxgiInfoManager.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cone.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ConstantBuffers.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cube.h" />
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cylinder.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Drawable.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DrawableBase.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\dxerr.h" />
@@ -236,6 +238,7 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidSphere.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Sphere.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Surface.h" />
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestObject.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Texture.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Timer.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Topology.h" />
@@ -250,17 +253,27 @@
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXGetErrorDescription.inl" />
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXGetErrorString.inl" />
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXTrace.inl" />
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ColorBlendPS.hlsl">
+    <FxCompile Include="BlendedPhongPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ColorBlendVS.hlsl">
+    <FxCompile Include="BlendedPhongVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\IndexedPhongPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -292,25 +305,17 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TexturePS.hlsl">
+    <FxCompile Include="TexturedPhongPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TextureVS.hlsl">
+    <FxCompile Include="TexturedPhongVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="ColorIndexPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="ColorIndexVS.hsls">
       <FileType>Document</FileType>

@@ -159,6 +159,9 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PointLight.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cylinder.cpp">
+      <Filter>Исходные файлы\Drawable\Primitives</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\WindowsInclude.h">
@@ -311,11 +314,17 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Box.h">
       <Filter>Файлы заголовков\Drawable\Primitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidSphere.h">
-      <Filter>Исходные файлы\Drawable\Primitives</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PointLight.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestObject.h">
+      <Filter>Файлы заголовков\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cylinder.h">
+      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidSphere.h">
+      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -333,21 +342,6 @@
     <FxCompile Include="ColorIndexVS.hsls">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="ColorIndexPS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ColorBlendPS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ColorBlendVS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TextureVS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TexturePS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
@@ -358,6 +352,21 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\IndexedPhongPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="BlendedPhongPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="BlendedPhongVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedPhongPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedPhongVS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
