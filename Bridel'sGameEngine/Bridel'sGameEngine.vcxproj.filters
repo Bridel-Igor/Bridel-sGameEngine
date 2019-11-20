@@ -162,6 +162,9 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cylinder.cpp">
       <Filter>Исходные файлы\Drawable\Primitives</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\AssTest.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\WindowsInclude.h">
@@ -324,6 +327,9 @@
       <Filter>Файлы заголовков\Drawable\Primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidSphere.h">
+      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\AssTest.h">
       <Filter>Файлы заголовков\Drawable\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
