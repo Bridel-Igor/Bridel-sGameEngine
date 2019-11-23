@@ -47,7 +47,7 @@ void PointLight::reset() noexcept
 	};
 }
 
-void PointLight::draw(Graphics& gfx) const noexcept(!IS_DEBUG)
+void PointLight::draw(Graphics& gfx) const noxnd
 {
 	mesh.setPos(cbData.pos);
 	mesh.draw(gfx);

@@ -4,6 +4,7 @@
 #include <string>
 #include <assert.h>
 #include <memory>
+#include "ConditionalNoexcept.h"
 
 class Surface
 {
@@ -100,8 +101,8 @@ public:
 	Surface& operator=(const Surface&) = delete;
 	~Surface();
 	void clear(Color fillValue) noexcept;
-	void putPixel(unsigned int x, unsigned int y, Color c) noexcept(!IS_DEBUG);
-	Color getPixel(unsigned int x, unsigned int y) const noexcept(!IS_DEBUG);
+	void putPixel(unsigned int x, unsigned int y, Color c) noxnd;
+	Color getPixel(unsigned int x, unsigned int y) const noxnd;
 	unsigned int getWidth() const noexcept;
 	unsigned int getHeight() const noexcept;
 	Color* getBufferPtr() noexcept;
@@ -109,7 +110,7 @@ public:
 	const Color* getBufferPtrConst() const noexcept;
 	static Surface fromFile(const std::string& name);
 	void save(const std::string& filename) const;
-	void copy(const Surface& src) noexcept(!IS_DEBUG);
+	void copy(const Surface& src) noxnd;
 private:
 	Surface(unsigned int width, unsigned int height, std::unique_ptr<Color[]> pBufferParam) noexcept;
 private:

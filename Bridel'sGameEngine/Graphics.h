@@ -9,10 +9,16 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include "DxgiInfoManager.h"
+#include "ConditionalNoexcept.h"
+
+namespace Bind
+{
+	class Bindable;
+}
 
 class Graphics
 {
-	friend class Bindable;
+	friend Bind::Bindable;
 public:
 	class Exception : public ExceptionFinder
 	{
@@ -56,7 +62,7 @@ public:
 	~Graphics();
 	void endFrame();
 	void beginFrame(float red, float green, float blue) noexcept;
-	void drawIndexed(UINT count) noexcept(!IS_DEBUG);
+	void drawIndexed(UINT count) noxnd;
 	void setProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX getProjection() const noexcept;
 	void setCamera(DirectX::FXMMATRIX cam) noexcept;

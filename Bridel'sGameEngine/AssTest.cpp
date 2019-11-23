@@ -1,10 +1,12 @@
 #include "AssTest.h"
-#include "BindableBase.h"
+#include "BindableCommon.h"
 #include "GraphicsThrowMacros.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "Vertex.h"
+
+using namespace Bind;
 
 AssTest::AssTest(Graphics& gfx, std::mt19937& rng,
 	std::uniform_real_distribution<float>& adist,
@@ -20,8 +22,8 @@ AssTest::AssTest(Graphics& gfx, std::mt19937& rng,
 
 	if (!isStaticInitialized())
 	{
-		using hw3dexp::VertexLayout;
-		hw3dexp::VertexBuffer vbuf(std::move(
+		using Dvtx::VertexLayout;
+		Dvtx::VertexBuffer vbuf(std::move(
 			VertexLayout{}
 			.append(VertexLayout::Position3D)
 			.append(VertexLayout::Normal)
@@ -58,7 +60,7 @@ AssTest::AssTest(Graphics& gfx, std::mt19937& rng,
 		addStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, indices));
 
 		auto pvs = std::make_unique<VertexShader>(gfx, L"PhongVS.cso");
-		auto pvsbc = pvs->getByteCode();
+		auto pvsbc = pvs->getBytecode();
 		addStaticBind(std::move(pvs));
 
 		addStaticBind(std::make_unique<PixelShader>(gfx, L"PhongPS.cso"));
