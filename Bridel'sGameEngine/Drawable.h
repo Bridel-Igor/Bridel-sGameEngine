@@ -13,7 +13,8 @@ public:
 	Drawable(const Drawable&) = delete;
 	virtual DirectX::XMMATRIX getTransformXM() const noexcept = 0;
 	void draw(Graphics& gfx) const noexcept(!IS_DEBUG);
-	virtual void update(float dt) noexcept = 0;
+	virtual void update(float dt) noexcept
+	{}
 	virtual ~Drawable() = default;
 protected:
 	template<class T>
