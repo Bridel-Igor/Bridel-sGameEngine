@@ -20,7 +20,7 @@ App::App()
 	wnd(1280, 720, "Bridel'sGameEngine"),
 	light(wnd.gfx())
 {
-	wnd.gfx().setProjection(dx::XMMatrixPerspectiveLH(1.0f, 720.0f / 1280.0f, 0.5f, 100.0f));
+	wnd.gfx().setProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 100.0f));
 }
 
 int App::go()
