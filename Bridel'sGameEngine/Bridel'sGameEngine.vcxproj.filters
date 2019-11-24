@@ -144,9 +144,6 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PointLight.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\AssTest.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Vertex.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -224,9 +221,6 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DrawableBase.h">
       <Filter>Файлы заголовков\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cube.h">
-      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\IndexedTriangleList.h">
       <Filter>Файлы заголовков\Drawable</Filter>
     </ClInclude>
@@ -234,15 +228,6 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Sphere.h">
-      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cone.h">
-      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Plane.h">
-      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Prism.h">
       <Filter>Файлы заголовков\Drawable\Primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Surface.h">
@@ -294,9 +279,6 @@
       <Filter>Файлы заголовков\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidSphere.h">
-      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\AssTest.h">
       <Filter>Файлы заголовков\Drawable\Primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Vertex.h">
