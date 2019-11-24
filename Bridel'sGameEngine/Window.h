@@ -51,14 +51,22 @@ private:
 		HINSTANCE hInst;
 	};
 	
+	void confineCursor() noexcept;
+	void freeCursor() noexcept;
+	void hideCursor() noexcept;
+	void showCursor() noexcept;
+	void enableImGuiMouse() noexcept;
+	void disableImGuiMouse() noexcept;
 	static LRESULT WINAPI HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT WINAPI HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	LRESULT handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 
+	bool cursorEnabled = true;
 	int width;
 	int height;
 	HWND hWnd;
 	std::unique_ptr<Graphics> pGfx;
+	std::vector<BYTE> rawBuffer;
 
 public:
 	Window(int width, int height, const char* name);
@@ -66,6 +74,9 @@ public:
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	void setTitle(const std::string&);
+	void enableCursor() noexcept;
+	void disableCursor() noexcept;
+	bool isCursorEnabled() const noexcept;
 	static std::optional<int> processMessages();
 
 	Keyboard kbd;

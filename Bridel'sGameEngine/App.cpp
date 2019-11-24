@@ -59,11 +59,29 @@ void App::doFrame()
 	nano.draw(wnd.gfx());
 	light.draw(wnd.gfx());
 
+	while (const auto e = wnd.kbd.readKey())
+	{
+		if (e->isPress() && e->getCode() == VK_SPACE)
+		{
+			if (wnd.isCursorEnabled())
+			{
+				wnd.disableCursor();
+				wnd.mouse.enableRaw();
+			}
+			else
+			{
+				wnd.enableCursor();
+				wnd.mouse.disableRaw();
+			}
+		}
+	}
+
 	// imgui windows
 	cam.spawnControlWindow();
 	light.spawnControlWindow();
-	showImguiDemoWindow();
+	//showImguiDemoWindow();
 	nano.showWindow();
+	showRawInputWindow();
 	//present
 	wnd.gfx().endFrame();
 }
@@ -73,4 +91,19 @@ void App::showImguiDemoWindow()
 	static bool show_demo_window = true;
 	if (show_demo_window)
 		ImGui::ShowDemoWindow(&show_demo_window);
+}
+
+void App::showRawInputWindow()
+{
+	while (const auto d = wnd.mouse.readRawDelta())
+	{
+		x += d->x;
+		y += d->y;
+	}
+	if (ImGui::Begin("Raw Input"))
+	{
+		ImGui::Text("Tally: (%d,%d)", x, y);
+		ImGui::Text("Cursor: %s", wnd.isCursorEnabled() ? "enabled" : "disabled");
+	}
+	ImGui::End();
 }
