@@ -1,10 +1,17 @@
 #include "VertexBuffer.h"
+#include "BindableCodex.h"
 
 namespace Bind
 {
 	VertexBuffer::VertexBuffer(Graphics& gfx, const Dvtx::VertexBuffer& vbuf)
 		:
-		stride((UINT)vbuf.getLayout().size())
+		VertexBuffer(gfx, "?", vbuf)
+	{}
+
+	VertexBuffer::VertexBuffer(Graphics& gfx, const std::string& tag, const Dvtx::VertexBuffer& vbuf)
+		:
+		stride((UINT)vbuf.getLayout().size()),
+		tag(tag)
 	{
 		INFOMAN(gfx);
 
@@ -24,5 +31,23 @@ namespace Bind
 	{
 		const UINT offset = 0u;
 		getContext(gfx)->IASetVertexBuffers(0u, 1u, pVertexBuffer.GetAddressOf(), &stride, &offset);
+	}
+
+	std::shared_ptr<VertexBuffer> VertexBuffer::resolve(Graphics& gfx, const std::string& tag, 
+		const Dvtx::VertexBuffer& vbuf)
+	{
+		assert(tag != "?");
+		return Codex::resolve<VertexBuffer>(gfx, tag, vbuf);
+	}
+
+	std::string VertexBuffer::getUID() const noexcept
+	{
+		return generateUID(tag);
+	}
+
+	std::string VertexBuffer::generateUID_(const std::string& tag)
+	{
+		using namespace std::string_literals;
+		return typeid(VertexBuffer).name() + "#"s + tag;
 	}
 }

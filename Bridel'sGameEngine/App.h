@@ -26,4 +26,5 @@ private:
 	Camera cam;
 	PointLight light;
 	Model nano{ wnd.gfx(), "Models\\nano_textured\\nanosuit.obj" };
+	Model nano2{ wnd.gfx(), "Models\\nano_textured\\nanosuit.obj" };
 };

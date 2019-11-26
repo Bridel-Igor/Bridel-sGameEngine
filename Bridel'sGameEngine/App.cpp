@@ -7,6 +7,7 @@
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "ImGui/imgui.h"
+#include "VertexBuffer.h"
 
 #pragma comment (lib, "assimp-vc141-mtd.lib")
 
@@ -57,6 +58,7 @@ void App::doFrame()
 
 	// render geometry
 	nano.draw(wnd.gfx());
+	nano2.draw(wnd.gfx());
 	light.draw(wnd.gfx());
 
 	while (const auto e = wnd.kbd.readKey())
@@ -108,7 +110,8 @@ void App::doFrame()
 	cam.spawnControlWindow();
 	light.spawnControlWindow();
 	showImguiDemoWindow();
-	nano.showWindow();
+	nano.showWindow("Model 1");
+	nano2.showWindow("Model 2");
 	//present
 	wnd.gfx().endFrame();
 }
