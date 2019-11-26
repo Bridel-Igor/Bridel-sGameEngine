@@ -4,14 +4,16 @@
 class Camera
 {
 public:
+	Camera() noexcept;
 	DirectX::XMMATRIX getMatrix() const noexcept;
 	void spawnControlWindow() noexcept;
 	void reset() noexcept;
+	void rotate(float dx, float dy) noexcept;
+	void translate(DirectX::XMFLOAT3 translation) noexcept;
 private:
-	float r = 20.0f;
-	float theta = 0.0f;
-	float phi = 0.0f;
-	float pitch = 0.0f;
-	float yaw = 0.0f;
-	float roll = 0.0f;
+	DirectX::XMFLOAT3 pos;
+	float pitch;
+	float yaw;
+	static constexpr float travelSpeed = 12.0f;
+	static constexpr float rotationSpeed = 0.004f;
 };

@@ -17,9 +17,8 @@ public:
 private:
 	void doFrame();
 	void showImguiDemoWindow();
-	void showRawInputWindow();
 private:
-	int x = 0, y = 0;
+	bool showDemoWindow = false;
 	ImGuiManager imGui;
 	Window wnd;
 	Timer timer;

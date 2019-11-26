@@ -61,8 +61,11 @@ void App::doFrame()
 
 	while (const auto e = wnd.kbd.readKey())
 	{
-		if (e->isPress() && e->getCode() == VK_SPACE)
+		if (!e->isPress())
+			continue;
+		switch (e->getCode())
 		{
+		case VK_ESCAPE:
 			if (wnd.isCursorEnabled())
 			{
 				wnd.disableCursor();
@@ -73,37 +76,45 @@ void App::doFrame()
 				wnd.enableCursor();
 				wnd.mouse.disableRaw();
 			}
+			break;
+		case VK_F1:
+			if (wnd.isCursorEnabled())
+				showDemoWindow = !showDemoWindow;
+			break;
 		}
 	}
+
+	if (!wnd.isCursorEnabled())
+	{
+		if (wnd.kbd.keyIsPressed('W'))
+			cam.translate({ 0.0f, 0.0f, dt });
+		if (wnd.kbd.keyIsPressed('A'))
+			cam.translate({ -dt, 0.0f, 0.0f });
+		if (wnd.kbd.keyIsPressed('S'))
+			cam.translate({ 0.0f, 0.0f, -dt });
+		if (wnd.kbd.keyIsPressed('D'))
+			cam.translate({ dt, 0.0f, 0.0f });
+		if (wnd.kbd.keyIsPressed('R'))
+			cam.translate({ 0.0f, dt, 0.0f });
+		if (wnd.kbd.keyIsPressed('F'))
+			cam.translate({ 0.0f, -dt, 0.0f });
+	}
+
+	while (const auto delta = wnd.mouse.readRawDelta())
+		if (!wnd.isCursorEnabled())
+			cam.rotate((float)delta->x, (float)delta->y);
 
 	// imgui windows
 	cam.spawnControlWindow();
 	light.spawnControlWindow();
-	//showImguiDemoWindow();
+	showImguiDemoWindow();
 	nano.showWindow();
-	showRawInputWindow();
 	//present
 	wnd.gfx().endFrame();
 }
 
 void App::showImguiDemoWindow()
 {
-	static bool show_demo_window = true;
-	if (show_demo_window)
-		ImGui::ShowDemoWindow(&show_demo_window);
-}
-
-void App::showRawInputWindow()
-{
-	while (const auto d = wnd.mouse.readRawDelta())
-	{
-		x += d->x;
-		y += d->y;
-	}
-	if (ImGui::Begin("Raw Input"))
-	{
-		ImGui::Text("Tally: (%d,%d)", x, y);
-		ImGui::Text("Cursor: %s", wnd.isCursorEnabled() ? "enabled" : "disabled");
-	}
-	ImGui::End();
+	if (showDemoWindow)
+		ImGui::ShowDemoWindow(&showDemoWindow);
 }
