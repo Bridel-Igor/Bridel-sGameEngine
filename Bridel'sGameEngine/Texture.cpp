@@ -6,7 +6,9 @@ namespace Bind
 {
 	namespace wrl = Microsoft::WRL;
 
-	Texture::Texture(Graphics& gfx, const Surface& s)
+	Texture::Texture(Graphics& gfx, const Surface& s, unsigned int slot)
+		:
+		slot(slot)
 	{
 		INFOMAN(gfx);
 
@@ -42,6 +44,6 @@ namespace Bind
 
 	void Texture::bind(Graphics& gfx) noexcept
 	{
-		getContext(gfx)->PSSetShaderResources(0u, 1u, pTextureView.GetAddressOf());
+		getContext(gfx)->PSSetShaderResources(slot, 1u, pTextureView.GetAddressOf());
 	}
 }

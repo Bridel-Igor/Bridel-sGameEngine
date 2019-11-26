@@ -1,5 +1,5 @@
 #pragma once
-#include "DrawableBase.h"
+#include "Drawable.h"
 #include "BindableCommon.h"
 #include "Vertex.h"
 #include <optional>
@@ -19,10 +19,10 @@ private:
 	std::string note;
 };
 
-class Mesh : public DrawableBase<Mesh>
+class Mesh : public Drawable
 {
 public:
-	Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bind::Bindable>> bindPtrs);
+	Mesh(Graphics& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs);
 	void draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noxnd;
 	DirectX::XMMATRIX getTransformXM() const noexcept override;
 private:
@@ -57,7 +57,7 @@ public:
 	void showWindow(const char* windowName = nullptr) noexcept;
 	~Model() noexcept;
 private:
-	static std::unique_ptr<Mesh> parseMesh(Graphics& gfx, const aiMesh& mesh);
+	static std::unique_ptr<Mesh> parseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials);
 	std::unique_ptr<Node> parseNode(int& nextId, const aiNode& node) noexcept;
 private:
 	std::unique_ptr<Node> pRoot;

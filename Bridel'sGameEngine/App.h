@@ -25,5 +25,5 @@ private:
 	float speed_factor = 1.0f;
 	Camera cam;
 	PointLight light;
-	Model nano{ wnd.gfx(), "Models\\nano.gltf" };
+	Model nano{ wnd.gfx(), "Models\\nano_textured\\nanosuit.obj" };
 };
