@@ -4,6 +4,7 @@
 #include "ImGuiManager.h"
 #include "Camera.h"
 #include "PointLight.h"
+#include "TestPlane.h"
 #include "Mesh.h"
 #include <set>
 
@@ -27,4 +28,5 @@ private:
 	PointLight light;
 	Model nano{ wnd.gfx(), "Models\\nano_textured\\nanosuit.obj" };
 	Model nano2{ wnd.gfx(), "Models\\nano_textured\\nanosuit.obj" };
+	TestPlane plane;
 };

@@ -150,6 +150,12 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Mesh.cpp">
       <Filter>Исходные файлы\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestPlane.cpp">
+      <Filter>Исходные файлы\Drawable\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TransformCbufDual.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\WindowsInclude.h">
@@ -296,6 +302,15 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\BindableCodex.h">
       <Filter>Файлы заголовков\Bindable</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestPlane.h">
+      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Plane.h">
+      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TransformCbufDual.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXGetErrorDescription.inl">
@@ -322,6 +337,9 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPSSpecMap.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPSNormalMap.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

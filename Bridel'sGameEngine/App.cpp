@@ -18,8 +18,10 @@ GDIPlusManager gdipm;
 App::App()
 	:
 	wnd(1280, 720, "Bridel'sGameEngine"),
-	light(wnd.gfx())
+	light(wnd.gfx()),
+	plane(wnd.gfx(), 3.0f)
 {
+	plane.setPos({ 1.0f, 17.0f, -1.0f });
 	wnd.gfx().setProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 100.0f));
 }
 
@@ -60,6 +62,7 @@ void App::doFrame()
 	nano.draw(wnd.gfx());
 	nano2.draw(wnd.gfx());
 	light.draw(wnd.gfx());
+	plane.draw(wnd.gfx());
 
 	while (const auto e = wnd.kbd.readKey())
 	{
@@ -112,6 +115,7 @@ void App::doFrame()
 	showImguiDemoWindow();
 	nano.showWindow("Model 1");
 	nano2.showWindow("Model 2");
+	plane.spawnControlWindow(wnd.gfx());
 	//present
 	wnd.gfx().endFrame();
 }

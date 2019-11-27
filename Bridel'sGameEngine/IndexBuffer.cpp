@@ -47,12 +47,12 @@ namespace Bind
 
 	std::string IndexBuffer::getUID() const noexcept
 	{
-		using namespace std::string_literals;
-		return typeid(IndexBuffer).name() + "#"s + tag;
+		return generateUID_(tag);
 	}
 
 	std::string IndexBuffer::generateUID_(const std::string& tag)
 	{
-		return generateUID_(tag);
+		using namespace std::string_literals;
+		return typeid(IndexBuffer).name() + "#"s + tag;
 	}
 }

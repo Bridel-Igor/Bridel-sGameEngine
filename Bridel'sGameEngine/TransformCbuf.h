@@ -7,15 +7,18 @@ namespace Bind
 {
 	class TransformCbuf : public Bindable
 	{
-	private:
+	protected:
 		struct Transforms
 		{
+			DirectX::XMMATRIX modelView;
 			DirectX::XMMATRIX modelViewProj;
-			DirectX::XMMATRIX model;
 		};
 	public:
 		TransformCbuf(Graphics& gfx, const Drawable& parent, UINT slot = 0u);
 		void bind(Graphics& gfx) noexcept override;
+	protected:
+		void updateBindImpl(Graphics& gfx, const Transforms& tf) noexcept;
+		Transforms getTransforms(Graphics& gfx) noexcept;
 	private:
 		static std::unique_ptr<VertexConstantBuffer<Transforms>> pVcbuf;
 		const Drawable& parent;
