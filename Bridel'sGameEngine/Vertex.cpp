@@ -74,6 +74,10 @@ namespace Dvtx
 			return sizeof(Map<Texture2D>::SysType);
 		case Normal:
 			return sizeof(Map<Normal>::SysType);
+		case Tangent:
+			return sizeof(Map<Tangent>::SysType);
+		case Bitangent:
+			return sizeof(Map<Bitangent>::SysType);
 		case Float3Color:
 			return sizeof(Map<Float3Color>::SysType);
 		case Float4Color:
@@ -100,6 +104,10 @@ namespace Dvtx
 			return Map<Texture2D>::code;
 		case Normal:
 			return Map<Normal>::code;
+		case Tangent:
+			return Map<Tangent>::code;
+		case Bitangent:
+			return Map<Bitangent>::code;
 		case Float3Color:
 			return Map<Float3Color>::code;
 		case Float4Color:
@@ -122,6 +130,10 @@ namespace Dvtx
 			return generateDesc<Texture2D>(getOffset());
 		case Normal:
 			return generateDesc<Normal>(getOffset());
+		case Tangent:
+			return generateDesc<Tangent>(getOffset());
+		case Bitangent:
+			return generateDesc<Bitangent>(getOffset());
 		case Float3Color:
 			return generateDesc<Float3Color>(getOffset());
 		case Float4Color:
@@ -152,10 +164,19 @@ namespace Dvtx
 
 
 	// VertexBuffer
-	VertexBuffer::VertexBuffer(VertexLayout layout) noxnd
+	VertexBuffer::VertexBuffer(VertexLayout layout, size_t size) noxnd
 		:
 		layout(std::move(layout))
-	{}
+	{
+		resize(size);
+	}
+
+	void VertexBuffer::resize(size_t newSize) noxnd
+	{
+		const auto size = this->size();
+		if (size < newSize)
+			buffer.resize(buffer.size() + layout.size() * (newSize - size));
+	}
 
 	const char* VertexBuffer::getData() const noxnd
 	{

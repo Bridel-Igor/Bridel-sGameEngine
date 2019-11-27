@@ -55,6 +55,7 @@ public:
 	Model(Graphics& gfx, const std::string fileName);
 	void draw(Graphics& gfx) const noxnd;
 	void showWindow(const char* windowName = nullptr) noexcept;
+	void setRootTransform(DirectX::FXMMATRIX tf) noexcept;
 	~Model() noexcept;
 private:
 	static std::unique_ptr<Mesh> parseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials);

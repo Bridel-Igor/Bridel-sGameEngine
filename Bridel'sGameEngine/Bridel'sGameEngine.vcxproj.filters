@@ -156,6 +156,9 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TransformCbufDual.cpp">
       <Filter>Исходные файлы\Bindable</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestCube.cpp">
+      <Filter>Исходные файлы\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\WindowsInclude.h">
@@ -281,9 +284,6 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestObject.h">
       <Filter>Файлы заголовков\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidSphere.h">
-      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Vertex.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -302,14 +302,23 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\BindableCodex.h">
       <Filter>Файлы заголовков\Bindable</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestPlane.h">
-      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Plane.h">
       <Filter>Файлы заголовков\Drawable\Primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TransformCbufDual.h">
       <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidSphere.h">
+      <Filter>Файлы заголовков\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestCube.h">
+      <Filter>Файлы заголовков\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestPlane.h">
+      <Filter>Файлы заголовков\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cube.h">
+      <Filter>Файлы заголовков\Drawable\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -336,10 +345,16 @@
     <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidPS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPSSpecMap.hlsl">
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPSNormalMap.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPSNormalMap.hlsl">
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongVSNormalMap.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPSSpecNormalMap.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPSNormalMapObject.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

@@ -183,7 +183,8 @@ Model::Model(Graphics& gfx, const std::string fileName)
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices |
 		aiProcess_ConvertToLeftHanded |
-		aiProcess_GenNormals
+		aiProcess_GenNormals |
+		aiProcess_CalcTangentSpace
 	);
 
 	if (pScene == nullptr)
@@ -207,6 +208,11 @@ void Model::showWindow(const char* windowName) noexcept
 	pWindow->show(windowName, *pRoot);
 }
 
+void Model::setRootTransform(DirectX::FXMMATRIX tf) noexcept
+{
+	pRoot->setAppliedTransform(tf);
+}
+
 Model::~Model() noexcept
 {}
 
@@ -219,6 +225,8 @@ std::unique_ptr<Mesh> Model::parseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		VertexLayout{}
 		.append(VertexLayout::Position3D)
 		.append(VertexLayout::Normal)
+		.append(VertexLayout::Tangent)
+		.append(VertexLayout::Bitangent)
 		.append(VertexLayout::Texture2D)
 	));
 
@@ -226,6 +234,8 @@ std::unique_ptr<Mesh> Model::parseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		vbuf.emplaceBack(
 			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mVertices[i]),
 			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i]),
+			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mTangents[i]),
+			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mBitangents[i]),
 			*reinterpret_cast<dx::XMFLOAT2*>(&mesh.mTextureCoords[0][i])
 		);
 
@@ -243,7 +253,7 @@ std::unique_ptr<Mesh> Model::parseMesh(Graphics& gfx, const aiMesh& mesh, const 
 	std::vector<std::shared_ptr<Bindable>> bindablePtrs;
 
 	using namespace std::string_literals;
-	const auto base = "Models\\nano_textured\\"s;
+	const auto base = "Models\\brick_wall\\"s;
 
 	bool hasSpecularMap = false;
 	float shininess = 35.0f;
@@ -264,6 +274,9 @@ std::unique_ptr<Mesh> Model::parseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		else
 			material.Get(AI_MATKEY_SHININESS, shininess);
 
+		material.GetTexture(aiTextureType_NORMALS, 0, &texFileName);
+		bindablePtrs.push_back(Texture::resolve(gfx, base + texFileName.C_Str(), 2));
+
 		bindablePtrs.push_back(Sampler::resolve(gfx));
 	}
 
@@ -273,22 +286,34 @@ std::unique_ptr<Mesh> Model::parseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
 	bindablePtrs.push_back(std::make_shared<Bind::IndexBuffer>(gfx, indices));
 
-	auto pvs = VertexShader::resolve(gfx, "PhongVS.cso");
+	auto pvs = VertexShader::resolve(gfx, "PhongVSNormalMap.cso");
 	auto pvsbc = pvs->getBytecode();
 	bindablePtrs.push_back(std::move(pvs));
 
 	bindablePtrs.push_back(InputLayout::resolve(gfx, vbuf.getLayout(), pvsbc));
 
 	if (hasSpecularMap)
-		bindablePtrs.push_back(PixelShader::resolve(gfx, "PhongPSSpecMap.cso"));
-	else
 	{
-		bindablePtrs.push_back(PixelShader::resolve(gfx, "PhongPS.cso"));
+		bindablePtrs.push_back(PixelShader::resolve(gfx, "PhongPSSpecNormalMap.cso"));
+
 		struct PSMaterialConstant
 		{
-			float specularIntensity = 0.8f;
+			BOOL normalMapEnabled = TRUE;
+			float padding[3];
+		} pmc;
+		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
+		// Ns (specular power) specified for each in the material properties... bad conflict
+		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::resolve(gfx, pmc, 1u));
+	}
+	else
+	{
+		bindablePtrs.push_back(PixelShader::resolve(gfx, "PhongPSNormalMap.cso"));
+		struct PSMaterialConstant
+		{
+			float specularIntensity = 0.18f;
 			float specularPower;
-			float padding[2];
+			BOOL normalMapEnabled = TRUE;
+			float padding[1];
 		} pmc;
 		pmc.specularPower = shininess;
 		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::resolve(gfx, pmc, 1u));

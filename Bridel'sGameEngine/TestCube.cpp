@@ -1,17 +1,18 @@
-#include "TestPlane.h"
-#include "Plane.h"
+#include "TestCube.h"
+#include "Cube.h"
 #include "BindableCommon.h"
-#include "ImGui/imgui.h"
 #include "TransformCbufDual.h"
+#include "ImGui/imgui.h"
 
-TestPlane::TestPlane(Graphics& gfx, float size)
+TestCube::TestCube(Graphics& gfx, float size)
 {
 	using namespace Bind;
 	namespace dx = DirectX;
 
-	auto model = Plane::make();
-	model.transform(dx::XMMatrixScaling(size, size, 1.0f));
-	const auto geometryTag = "$plane." + std::to_string(size);
+	auto model = Cube::makeIndependentTextured();
+	model.transform(dx::XMMatrixScaling(size, size, size));
+	model.setNormalsIndependentFlat();
+	const auto geometryTag = "$cube." + std::to_string(size);
 	addBind(VertexBuffer::resolve(gfx, geometryTag, model.vertices));
 	addBind(IndexBuffer::resolve(gfx, geometryTag, model.indices));
 
@@ -22,7 +23,7 @@ TestPlane::TestPlane(Graphics& gfx, float size)
 	auto pvsbc = pvs->getBytecode();
 	addBind(std::move(pvs));
 
-	addBind(PixelShader::resolve(gfx, "PhongPSNormalMapObject.cso"));
+	addBind(PixelShader::resolve(gfx, "PhongPSNormalMap.cso"));
 
 	addBind(PixelConstantBuffer<PSMaterialConstant>::resolve(gfx, pmc, 1u));
 
@@ -33,27 +34,27 @@ TestPlane::TestPlane(Graphics& gfx, float size)
 	addBind(std::make_shared<TransformCbufDual>(gfx, *this, 0u, 2u));
 }
 
-void TestPlane::setPos(DirectX::XMFLOAT3 pos) noexcept
+void TestCube::setPos(DirectX::XMFLOAT3 pos) noexcept
 {
 	this->pos = pos;
 }
 
-void TestPlane::setRotation(float roll, float pitch, float yaw) noexcept
+void TestCube::setRotation(float roll, float pitch, float yaw) noexcept
 {
 	this->roll = roll;
 	this->pitch = pitch;
 	this->yaw = yaw;
 }
 
-DirectX::XMMATRIX TestPlane::getTransformXM() const noexcept
+DirectX::XMMATRIX TestCube::getTransformXM() const noexcept
 {
 	return DirectX::XMMatrixRotationRollPitchYaw(roll, pitch, yaw) *
 		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 }
 
-void TestPlane::spawnControlWindow(Graphics& gfx) noexcept
+void TestCube::spawnControlWindow(Graphics& gfx) noexcept
 {
-	if (ImGui::Begin("Plane"))
+	if (ImGui::Begin("Cube"))
 	{
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f");

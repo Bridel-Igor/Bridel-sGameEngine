@@ -127,6 +127,7 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Sampler.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidSphere.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Surface.cpp" />
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestCube.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestPlane.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Texture.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Timer.cpp" />
@@ -143,7 +144,9 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\App.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Bindable.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\BindableCodex.h" />
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cube.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Plane.h" />
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestCube.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestPlane.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TransformCbufDual.h" />
     <ClInclude Include="BindableCommon.h" />
@@ -208,13 +211,25 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPSSpecMap.hlsl">
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPSNormalMapObject.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="PhongPSSpecNormalMap.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongVSNormalMap.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>

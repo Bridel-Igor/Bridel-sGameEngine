@@ -1,10 +1,10 @@
 #pragma once
 #include "Drawable.h"
 
-class TestPlane : public Drawable
+class TestCube : public Drawable
 {
 public:
-	TestPlane(Graphics& gfx, float size);
+	TestCube(Graphics& gfx, float size);
 	void setPos(DirectX::XMFLOAT3 pos) noexcept;
 	void setRotation(float roll, float pitch, float yaw) noexcept;
 	DirectX::XMMATRIX getTransformXM() const noexcept override;
@@ -12,12 +12,12 @@ public:
 private:
 	struct PSMaterialConstant
 	{
-		float specularIntensity = 0.18f;
-		float specularPower = 18.0f;
+		float specularIntensity = 0.1f;
+		float specularPower = 20.0f;
 		BOOL normalMappingEnabled = TRUE;
 		float padding[1];
 	} pmc;
-	DirectX::XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };
+	DirectX::XMFLOAT3 pos = { 1.0f, 1.0f, 1.0f };
 	float roll = 0.0f;
 	float pitch = 0.0f;
 	float yaw = 0.0f;

@@ -26,7 +26,6 @@ private:
 	float speed_factor = 1.0f;
 	Camera cam;
 	PointLight light;
-	Model nano{ wnd.gfx(), "Models\\nano_textured\\nanosuit.obj" };
-	Model nano2{ wnd.gfx(), "Models\\nano_textured\\nanosuit.obj" };
-	TestPlane plane;
+	Model wall{ wnd.gfx(), "Models\\brick_wall\\brick_wall.obj" };
+	TestPlane tp{ wnd.gfx(), 1.0 };
 };
