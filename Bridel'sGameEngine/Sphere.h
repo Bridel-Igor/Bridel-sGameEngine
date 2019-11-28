@@ -48,7 +48,7 @@ public:
 		const auto iSouthPole = (unsigned short)vb.size();
 		{
 			dx::XMFLOAT3 southPos;
-			dx:XMStoreFloat3(&southPos, dx::XMVectorNegate(base));
+			dx::XMStoreFloat3(&southPos, dx::XMVectorNegate(base));
 			vb.emplaceBack(southPos);
 		}
 		

@@ -159,6 +159,9 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestCube.cpp">
       <Filter>Исходные файлы\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\XMMatrixExtractor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\WindowsInclude.h">
@@ -320,6 +323,12 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cube.h">
       <Filter>Файлы заголовков\Drawable\Primitives</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\NormalMapTwerker.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\XMMatrixExtractor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DXGetErrorDescription.inl">
@@ -357,5 +366,28 @@
     <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPSNormalMapObject.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongVSNotex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPSNotex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PhongPsSpec.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ShaderOps.hlsl">
+      <Filter>Shader</Filter>
+    </Text>
+    <Text Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\PointLight.hlsl">
+      <Filter>Shader</Filter>
+    </Text>
+    <Text Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Transform.hlsl">
+      <Filter>Shader</Filter>
+    </Text>
+    <Text Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\LightVectorData.hlsl">
+      <Filter>Shader</Filter>
+    </Text>
   </ItemGroup>
 </Project>

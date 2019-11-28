@@ -8,6 +8,8 @@
 #include "GDIPlusManager.h"
 #include "ImGui/imgui.h"
 #include "VertexBuffer.h"
+#include "NormalMapTwerker.h"
+#include <shellapi.h>
 
 #pragma comment (lib, "assimp-vc141-mtd.lib")
 
@@ -15,13 +17,37 @@ namespace dx = DirectX;
 
 GDIPlusManager gdipm;
 
-App::App()
+App::App(const std::string& commandLine)
 	:
+	commandLine(commandLine),
 	wnd(1280, 720, "Bridel'sGameEngine"),
 	light(wnd.gfx())
 {
-	wall.setRootTransform(dx::XMMatrixTranslation(-1.5f, 0.0f, 0.0f));
-	tp.setPos({ 1.5f, 0.0f, 0.0f });
+	if (this->commandLine != "")
+	{
+		int nArgs;
+		const auto pLineW = GetCommandLineW();
+		const auto pArgs = CommandLineToArgvW(pLineW, &nArgs);
+		if (nArgs >= 4 && std::wstring(pArgs[1]) == L"--ntwerk-rotx180")
+		{
+			const std::wstring pathInWide = pArgs[2];
+			const std::wstring pathOutWide = pArgs[3];
+			NormalMapTwerker::rotateXAxis180(
+				std::string(pathInWide.begin(), pathInWide.end()),
+				std::string(pathOutWide.begin(), pathOutWide.end())
+			);
+			throw std::runtime_error("Normal map processed succesfully. Just kidding about that whole runtime error thing.");
+		}
+	}
+	wall1.setRootTransform(dx::XMMatrixTranslation(-12.0f, 12.0f, 0.0f));
+	wall2.setRootTransform(dx::XMMatrixTranslation(12.0f, 12.0f, 0.0f));
+	tp1.setPos({ 12.0f, 0.0f, -12.0f });
+	tp2.setPos({ -12.0f, 0.0f, -12.0f });
+	tp1.setRotation(PI/2.0f, 0, 0);
+	tp2.setRotation(PI/2.0f, 0, 0);
+	gobber.setRootTransform(dx::XMMatrixTranslation(-9.0f, 16.5f, -4.0f));
+	muro.setRootTransform(dx::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
+	nano.setRootTransform(dx::XMMatrixTranslation(11.0f, 0.0f, -4.0f));
 	wnd.gfx().setProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 100.0f));
 }
 
@@ -59,8 +85,13 @@ void App::doFrame()
 	light.bind(wnd.gfx(), cam.getMatrix());
 
 	// render geometry
-	wall.draw(wnd.gfx());
-	tp.draw(wnd.gfx());
+	wall1.draw(wnd.gfx());
+	wall2.draw(wnd.gfx());
+	tp1.draw(wnd.gfx());
+	tp2.draw(wnd.gfx());
+	nano.draw(wnd.gfx());
+	gobber.draw(wnd.gfx());
+	muro.draw(wnd.gfx());
 	light.draw(wnd.gfx());
 
 	while (const auto e = wnd.kbd.readKey())
@@ -112,8 +143,12 @@ void App::doFrame()
 	cam.spawnControlWindow();
 	light.spawnControlWindow();
 	showImguiDemoWindow();
-	wall.showWindow("Wall");
-	tp.spawnControlWindow(wnd.gfx());
+	gobber.showWindow(wnd.gfx(), "Gobber");
+	muro.showWindow(wnd.gfx(), "Muro");
+	wall1.showWindow(wnd.gfx(), "Wall_1");
+	wall2.showWindow(wnd.gfx(), "Wall_2");
+	//tp1.spawnControlWindow(wnd.gfx());
+	nano.showWindow(wnd.gfx(), "Nano");
 	//present
 	wnd.gfx().endFrame();
 }

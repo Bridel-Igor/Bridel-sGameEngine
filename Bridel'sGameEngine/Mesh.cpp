@@ -3,6 +3,7 @@
 #include "Surface.h"
 #include <unordered_map>
 #include <sstream>
+#include "XMMatrixExtractor.h"
 
 namespace dx = DirectX;
 
@@ -107,6 +108,11 @@ void Node::setAppliedTransform(DirectX::FXMMATRIX transform) noexcept
 	dx::XMStoreFloat4x4(&appliedTransform, transform);
 }
 
+const DirectX::XMFLOAT4X4& Node::getAppliedTransform() const noexcept
+{
+	return appliedTransform;
+}
+
 int Node::getId() const noexcept
 {
 	return id;
@@ -123,7 +129,7 @@ void Node::addChild(std::unique_ptr<Node> pChild) noxnd
 class ModelWindow // pImpl idiom, only defined in this .cpp
 {
 public:
-	void show(const char* windowName, const Node& root) noexcept
+	void show(Graphics& gfx, const char* windowName, const Node& root) noexcept
 	{
 		windowName = windowName ? windowName : "Model";
 		int nodeIndexTracker = 0;
@@ -135,7 +141,25 @@ public:
 			ImGui::NextColumn();
 			if (pSelectedNode != nullptr)
 			{
-				auto& transform = transforms[pSelectedNode->getId()];
+				//auto& transform = transforms[pSelectedNode->getId()];
+
+				const auto id = pSelectedNode->getId();
+				auto i = transforms.find(id);
+				if (i == transforms.end())
+				{
+					const auto& applied = pSelectedNode->getAppliedTransform();
+					const auto angles = extractEulerAngles(applied);
+					const auto translation = extractTranslation(applied);
+					TransformParameters tp;
+					tp.roll = angles.z;
+					tp.pitch = angles.x;
+					tp.pitch = angles.z;
+					tp.x = translation.x;
+					tp.y = translation.y;
+					tp.z = translation.z;
+					std::tie(i, std::ignore) = transforms.insert({ id, tp });
+				}
+				auto& transform = i->second;
 				ImGui::Text("Orientation");
 				ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f);
 				ImGui::SliderAngle("Pitch", &transform.pitch, -180.0f, 180.0f);
@@ -145,6 +169,9 @@ public:
 				ImGui::SliderFloat("X", &transform.x, -20.0f, 20.0f);
 				ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f);
 				ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f);
+
+				if (!pSelectedNode->controlMeDaddy(gfx, skinMaterial))
+					pSelectedNode->controlMeDaddy(gfx, ringMaterial);
 			}
 		}
 		ImGui::End();
@@ -171,15 +198,17 @@ private:
 		float y = 0.0f;
 		float z = 0.0f;
 	};
+	Node::PSMaterialConstantFullmonte skinMaterial;
+	Node::PSMaterialConstantNotex ringMaterial;
 	std::unordered_map<int, TransformParameters> transforms;
 };
 
-Model::Model(Graphics& gfx, const std::string fileName)
+Model::Model(Graphics& gfx, const std::string& pathString, const float scale)
 	:
 	pWindow(std::make_unique<ModelWindow>())
 {
 	Assimp::Importer imp;
-	const auto pScene = imp.ReadFile(fileName.c_str(),
+	const auto pScene = imp.ReadFile(pathString.c_str(),
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices |
 		aiProcess_ConvertToLeftHanded |
@@ -191,7 +220,7 @@ Model::Model(Graphics& gfx, const std::string fileName)
 		throw ModelException(__LINE__, __FILE__, imp.GetErrorString());
 
 	for (size_t i = 0; i < pScene->mNumMeshes; i++)
-		meshPtrs.push_back(parseMesh(gfx, *pScene->mMeshes[i], pScene->mMaterials));
+		meshPtrs.push_back(parseMesh(gfx, *pScene->mMeshes[i], pScene->mMaterials, pathString, scale));
 	int nextId = 0;
 	pRoot = parseNode(nextId, *pScene->mRootNode);
 }
@@ -203,9 +232,9 @@ void Model::draw(Graphics& gfx) const noxnd
 	pRoot->draw(gfx, dx::XMMatrixIdentity());
 }
 
-void Model::showWindow(const char* windowName) noexcept
+void Model::showWindow(Graphics& gfx, const char* windowName) noexcept
 {
-	pWindow->show(windowName, *pRoot);
+	pWindow->show(gfx, windowName, *pRoot);
 }
 
 void Model::setRootTransform(DirectX::FXMMATRIX tf) noexcept
@@ -216,107 +245,335 @@ void Model::setRootTransform(DirectX::FXMMATRIX tf) noexcept
 Model::~Model() noexcept
 {}
 
-std::unique_ptr<Mesh> Model::parseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials)
+std::unique_ptr<Mesh> Model::parseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, float scale)
 {
+	using namespace std::string_literals;
 	using Dvtx::VertexLayout;
 	using namespace Bind;
-
-	Dvtx::VertexBuffer vbuf(std::move(
-		VertexLayout{}
-		.append(VertexLayout::Position3D)
-		.append(VertexLayout::Normal)
-		.append(VertexLayout::Tangent)
-		.append(VertexLayout::Bitangent)
-		.append(VertexLayout::Texture2D)
-	));
-
-	for (unsigned int i = 0; i < mesh.mNumVertices; i++)
-		vbuf.emplaceBack(
-			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mVertices[i]),
-			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i]),
-			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mTangents[i]),
-			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mBitangents[i]),
-			*reinterpret_cast<dx::XMFLOAT2*>(&mesh.mTextureCoords[0][i])
-		);
-
-	std::vector<unsigned short> indices;
-	indices.reserve(mesh.mNumFaces * 3);
-	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
-	{
-		const auto& face = mesh.mFaces[i];
-		assert(face.mNumIndices == 3);
-		indices.push_back(face.mIndices[0]);
-		indices.push_back(face.mIndices[1]);
-		indices.push_back(face.mIndices[2]);
-	}
+	
+	const auto rootPath = path.parent_path().string() + "\\";
 
 	std::vector<std::shared_ptr<Bindable>> bindablePtrs;
+	
 
-	using namespace std::string_literals;
-	const auto base = "Models\\brick_wall\\"s;
+	const auto base = "Models\\gobber\\"s;
 
 	bool hasSpecularMap = false;
-	float shininess = 35.0f;
+	bool hasAlphaGloss = false;
+	bool hasNormalMap = false;
+	bool hasDiffuseMap = false;
+	float shininess = 2.0f;
+	dx::XMFLOAT4 specularColor = { 0.18f,0.18f,0.18f,1.0f };
+	dx::XMFLOAT4 diffuseColor = { 0.45f,0.45f,0.85f,1.0f };
 	if (mesh.mMaterialIndex >= 0)
 	{
 		auto& material = *pMaterials[mesh.mMaterialIndex];
 
 		aiString texFileName;
 
-		material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName);
-		bindablePtrs.push_back(Texture::resolve(gfx, base + texFileName.C_Str()));
+		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
+		{
+			bindablePtrs.push_back(Texture::resolve(gfx, rootPath + texFileName.C_Str()));
+			hasDiffuseMap = true;
+		}
+		else
+			material.Get(AI_MATKEY_COLOR_DIFFUSE, reinterpret_cast<aiColor3D&>(diffuseColor));
 
 		if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			bindablePtrs.push_back(Texture::resolve(gfx, base + texFileName.C_Str(), 1));
+			auto tex = Texture::resolve(gfx, rootPath + texFileName.C_Str(), 1);
+			hasAlphaGloss = tex->hasAlpha();
+			bindablePtrs.push_back(std::move(tex));
 			hasSpecularMap = true;
 		}
 		else
+			material.Get(AI_MATKEY_COLOR_SPECULAR, reinterpret_cast<aiColor3D&>(specularColor));
+
+		if (!hasAlphaGloss)
 			material.Get(AI_MATKEY_SHININESS, shininess);
 
-		material.GetTexture(aiTextureType_NORMALS, 0, &texFileName);
-		bindablePtrs.push_back(Texture::resolve(gfx, base + texFileName.C_Str(), 2));
+		if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName) == aiReturn_SUCCESS)
+		{
+			auto tex = Texture::resolve(gfx, rootPath + texFileName.C_Str(), 2);
+			hasAlphaGloss = tex->hasAlpha();
+			bindablePtrs.push_back(std::move(tex));
+			hasNormalMap = true;
+		}
 
-		bindablePtrs.push_back(Sampler::resolve(gfx));
+		if (hasDiffuseMap || hasSpecularMap || hasNormalMap)
+			bindablePtrs.push_back(Bind::Sampler::resolve(gfx));
 	}
 
-	auto meshTag = base + "%" + mesh.mName.C_Str();
+	auto meshTag = path.string() + "%" + mesh.mName.C_Str();
 
-	bindablePtrs.push_back(VertexBuffer::resolve(gfx, meshTag, vbuf));
-
-	bindablePtrs.push_back(std::make_shared<Bind::IndexBuffer>(gfx, indices));
-
-	auto pvs = VertexShader::resolve(gfx, "PhongVSNormalMap.cso");
-	auto pvsbc = pvs->getBytecode();
-	bindablePtrs.push_back(std::move(pvs));
-
-	bindablePtrs.push_back(InputLayout::resolve(gfx, vbuf.getLayout(), pvsbc));
-
-	if (hasSpecularMap)
+	if (hasDiffuseMap && hasSpecularMap && hasNormalMap)
 	{
+		Dvtx::VertexBuffer vbuf(std::move(
+			VertexLayout{}
+			.append(VertexLayout::Position3D)
+			.append(VertexLayout::Normal)
+			.append(VertexLayout::Tangent)
+			.append(VertexLayout::Bitangent)
+			.append(VertexLayout::Texture2D)
+		));
+
+		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+		{
+			vbuf.emplaceBack(
+				dx::XMFLOAT3(mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
+				*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i]),
+				*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mTangents[i]),
+				*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mBitangents[i]),
+				*reinterpret_cast<dx::XMFLOAT2*>(&mesh.mTextureCoords[0][i])
+			);
+		}
+
+		std::vector<unsigned short> indices;
+		indices.reserve(mesh.mNumFaces * 3);
+		for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+		{
+			const auto& face = mesh.mFaces[i];
+			assert(face.mNumIndices == 3);
+			indices.push_back(face.mIndices[0]);
+			indices.push_back(face.mIndices[1]);
+			indices.push_back(face.mIndices[2]);
+		}
+
+		bindablePtrs.push_back(VertexBuffer::resolve(gfx, meshTag, vbuf));
+
+		bindablePtrs.push_back(IndexBuffer::resolve(gfx, meshTag, indices));
+
+		auto pvs = VertexShader::resolve(gfx, "PhongVSNormalMap.cso");
+		auto pvsbc = pvs->getBytecode();
+		bindablePtrs.push_back(std::move(pvs));
+
 		bindablePtrs.push_back(PixelShader::resolve(gfx, "PhongPSSpecNormalMap.cso"));
 
-		struct PSMaterialConstant
-		{
-			BOOL normalMapEnabled = TRUE;
-			float padding[3];
-		} pmc;
+		bindablePtrs.push_back(InputLayout::resolve(gfx, vbuf.getLayout(), pvsbc));
+
+		Node::PSMaterialConstantFullmonte pmc;
+		pmc.specularPower = shininess;
+		pmc.hasGlossMap = hasAlphaGloss ? TRUE : FALSE;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
-		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::resolve(gfx, pmc, 1u));
+		bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantFullmonte>::resolve(gfx, pmc, 1u));
 	}
-	else
+	else if (hasDiffuseMap && hasNormalMap)
 	{
-		bindablePtrs.push_back(PixelShader::resolve(gfx, "PhongPSNormalMap.cso"));
-		struct PSMaterialConstant
+		Dvtx::VertexBuffer vbuf(std::move(
+			VertexLayout{}
+			.append(VertexLayout::Position3D)
+			.append(VertexLayout::Normal)
+			.append(VertexLayout::Tangent)
+			.append(VertexLayout::Bitangent)
+			.append(VertexLayout::Texture2D)
+		));
+
+		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
 		{
-			float specularIntensity = 0.18f;
+			vbuf.emplaceBack(
+				dx::XMFLOAT3(mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
+				*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i]),
+				*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mTangents[i]),
+				*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mBitangents[i]),
+				*reinterpret_cast<dx::XMFLOAT2*>(&mesh.mTextureCoords[0][i])
+			);
+		}
+
+		std::vector<unsigned short> indices;
+		indices.reserve(mesh.mNumFaces * 3);
+		for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+		{
+			const auto& face = mesh.mFaces[i];
+			assert(face.mNumIndices == 3);
+			indices.push_back(face.mIndices[0]);
+			indices.push_back(face.mIndices[1]);
+			indices.push_back(face.mIndices[2]);
+		}
+
+		bindablePtrs.push_back(VertexBuffer::resolve(gfx, meshTag, vbuf));
+
+		bindablePtrs.push_back(IndexBuffer::resolve(gfx, meshTag, indices));
+
+		auto pvs = VertexShader::resolve(gfx, "PhongVSNormalMap.cso");
+		auto pvsbc = pvs->getBytecode();
+		bindablePtrs.push_back(std::move(pvs));
+
+		bindablePtrs.push_back(PixelShader::resolve(gfx, "PhongPSNormalMap.cso"));
+		
+		bindablePtrs.push_back(InputLayout::resolve(gfx, vbuf.getLayout(), pvsbc));
+
+		struct PSMaterialConstantDiffnorm
+		{
+			float specularIntensity;
 			float specularPower;
-			BOOL normalMapEnabled = TRUE;
+			BOOL  normalMapEnabled = TRUE;
 			float padding[1];
 		} pmc;
 		pmc.specularPower = shininess;
-		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::resolve(gfx, pmc, 1u));
+		pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3;
+		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
+		// Ns (specular power) specified for each in the material properties... bad conflict
+		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffnorm>::resolve(gfx, pmc, 1u));
+	}
+	else if (hasDiffuseMap && !hasNormalMap && hasSpecularMap)
+	{
+		Dvtx::VertexBuffer vbuf(std::move(
+			VertexLayout{}
+			.append(VertexLayout::Position3D)
+			.append(VertexLayout::Normal)
+			.append(VertexLayout::Texture2D)
+		));
+
+		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+		{
+			vbuf.emplaceBack(
+				dx::XMFLOAT3(mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
+				*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i]),
+				*reinterpret_cast<dx::XMFLOAT2*>(&mesh.mTextureCoords[0][i])
+			);
+		}
+
+		std::vector<unsigned short> indices;
+		indices.reserve(mesh.mNumFaces * 3);
+		for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+		{
+			const auto& face = mesh.mFaces[i];
+			assert(face.mNumIndices == 3);
+			indices.push_back(face.mIndices[0]);
+			indices.push_back(face.mIndices[1]);
+			indices.push_back(face.mIndices[2]);
+		}
+
+		bindablePtrs.push_back(VertexBuffer::resolve(gfx, meshTag, vbuf));
+
+		bindablePtrs.push_back(IndexBuffer::resolve(gfx, meshTag, indices));
+
+		auto pvs = VertexShader::resolve(gfx, "PhongVS.cso");
+		auto pvsbc = pvs->getBytecode();
+		bindablePtrs.push_back(std::move(pvs));
+
+		bindablePtrs.push_back(PixelShader::resolve(gfx, "PhongPSSpec.cso"));
+
+		bindablePtrs.push_back(InputLayout::resolve(gfx, vbuf.getLayout(), pvsbc));
+
+		struct PSMaterialConstantDiffuseSpec
+		{
+			float specularPowerConst;
+			BOOL hasGloss;
+			float specularMapWeight;
+			float padding;
+		} pmc;
+		pmc.specularPowerConst = shininess;
+		pmc.hasGloss = hasAlphaGloss ? TRUE : FALSE;
+		pmc.specularMapWeight = 1.0f;
+		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
+		// Ns (specular power) specified for each in the material properties... bad conflict
+		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffuseSpec>::resolve(gfx, pmc, 1u));
+	}
+	else if (hasDiffuseMap)
+	{
+		Dvtx::VertexBuffer vbuf(std::move(
+			VertexLayout{}
+			.append(VertexLayout::Position3D)
+			.append(VertexLayout::Normal)
+			.append(VertexLayout::Texture2D)
+		));
+
+		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+		{
+			vbuf.emplaceBack(
+				dx::XMFLOAT3(mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
+				*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i]),
+				*reinterpret_cast<dx::XMFLOAT2*>(&mesh.mTextureCoords[0][i])
+			);
+		}
+
+		std::vector<unsigned short> indices;
+		indices.reserve(mesh.mNumFaces * 3);
+		for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+		{
+			const auto& face = mesh.mFaces[i];
+			assert(face.mNumIndices == 3);
+			indices.push_back(face.mIndices[0]);
+			indices.push_back(face.mIndices[1]);
+			indices.push_back(face.mIndices[2]);
+		}
+
+		bindablePtrs.push_back(VertexBuffer::resolve(gfx, meshTag, vbuf));
+
+		bindablePtrs.push_back(IndexBuffer::resolve(gfx, meshTag, indices));
+
+		auto pvs = VertexShader::resolve(gfx, "PhongVS.cso");
+		auto pvsbc = pvs->getBytecode();
+		bindablePtrs.push_back(std::move(pvs));
+
+		bindablePtrs.push_back(PixelShader::resolve(gfx, "PhongPS.cso"));
+
+		bindablePtrs.push_back(InputLayout::resolve(gfx, vbuf.getLayout(), pvsbc));
+
+		struct PSMaterialConstantDiffuse
+		{
+			float specularIntensity;
+			float specularPower;
+			float padding[2];
+		} pmc;
+		pmc.specularPower = shininess;
+		pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3;
+		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
+		// Ns (specular power) specified for each in the material properties... bad conflict
+		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffuse>::resolve(gfx, pmc, 1u));
+	}
+	else if (!hasDiffuseMap && !hasNormalMap && !hasSpecularMap)
+	{
+		Dvtx::VertexBuffer vbuf(std::move(
+			VertexLayout{}
+			.append(VertexLayout::Position3D)
+			.append(VertexLayout::Normal)
+		));
+
+		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+		{
+			vbuf.emplaceBack(
+				dx::XMFLOAT3(mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
+				*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i])
+			);
+		}
+
+		std::vector<unsigned short> indices;
+		indices.reserve(mesh.mNumFaces * 3);
+		for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+		{
+			const auto& face = mesh.mFaces[i];
+			assert(face.mNumIndices == 3);
+			indices.push_back(face.mIndices[0]);
+			indices.push_back(face.mIndices[1]);
+			indices.push_back(face.mIndices[2]);
+		}
+
+		bindablePtrs.push_back(VertexBuffer::resolve(gfx, meshTag, vbuf));
+
+		bindablePtrs.push_back(IndexBuffer::resolve(gfx, meshTag, indices));
+
+		auto pvs = VertexShader::resolve(gfx, "PhongVSNotex.cso");
+		auto pvsbc = pvs->getBytecode();
+		bindablePtrs.push_back(std::move(pvs));
+
+		bindablePtrs.push_back(PixelShader::resolve(gfx, "PhongPSNotex.cso"));
+
+		bindablePtrs.push_back(InputLayout::resolve(gfx, vbuf.getLayout(), pvsbc));
+
+		Node::PSMaterialConstantNotex pmc;
+		pmc.specularPower = shininess;
+		pmc.specularColor = specularColor;
+		pmc.materialColor = diffuseColor;
+		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
+		// Ns (specular power) specified for each in the material properties... bad conflict
+		bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantNotex>::resolve(gfx, pmc, 1u));
+	}
+	else
+	{
+		throw std::runtime_error("terrible combination of textures in material smh");
 	}
 
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));

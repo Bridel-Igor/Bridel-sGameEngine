@@ -7,6 +7,10 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "ConditionalNoexcept.h"
+#include "ConstantBuffers.h"
+#include <type_traits>
+#include <filesystem>
+#include "ImGui/imgui.h"
 
 class ModelException : public ExceptionFinder
 {
@@ -33,11 +37,85 @@ class Node
 {
 	friend class Model;
 public:
+	struct PSMaterialConstantFullmonte
+	{
+		BOOL  normalMapEnabled = TRUE;
+		BOOL  specularMapEnabled = TRUE;
+		BOOL  hasGlossMap = FALSE;
+		float specularPower = 3.1f;
+		DirectX::XMFLOAT3 specularColor = { 0.75f, 0.75f, 0.75f };
+		float specularMapWeight = 0.671f;
+	};
+	struct PSMaterialConstantNotex
+	{
+		DirectX::XMFLOAT4 materialColor;
+		DirectX::XMFLOAT4 specularColor = {0.65f, 0.65f, 0.65f, 1.0f};
+		float specularPower;
+		float padding[3];
+	};
+public:
 	Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noxnd;
 	void draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noxnd;
 	void setAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
+	const DirectX::XMFLOAT4X4& getAppliedTransform() const noexcept;
 	int getId() const noexcept;
 	void showTree(Node*& pSelectedNode) const noexcept;
+	template<class T>
+	bool controlMeDaddy(Graphics& gfx, T& c)
+	{
+		if (meshPtrs.empty())
+		{
+			return false;
+		}
+
+		if constexpr(std::is_same<T, PSMaterialConstantFullmonte>::value)
+		{
+			if (auto pcb = meshPtrs.front()->queryBindable<Bind::PixelConstantBuffer<T>>())
+			{
+				ImGui::Text("Material");
+
+				bool normalMapEnabled = (bool)c.normalMapEnabled;
+				ImGui::Checkbox("Norm Map", &normalMapEnabled);
+				c.normalMapEnabled = normalMapEnabled ? TRUE : FALSE;
+
+				bool specularMapEnabled = (bool)c.specularMapEnabled;
+				ImGui::Checkbox("Spec Map", &specularMapEnabled);
+				c.specularMapEnabled = specularMapEnabled ? TRUE : FALSE;
+
+				bool hasGlossMap = (bool)c.hasGlossMap;
+				ImGui::Checkbox("Gloss Alpha", &hasGlossMap);
+				c.hasGlossMap = hasGlossMap ? TRUE : FALSE;
+
+				ImGui::SliderFloat("Spec Weight", &c.specularMapWeight, 0.0f, 2.0f);
+
+				ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 1000.0f, "%f", 5.0f);
+
+				ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&c.specularColor));
+
+				pcb->update(gfx, c);
+				return true;
+			}
+		}
+
+		if constexpr (std::is_same<T, PSMaterialConstantNotex>::value)
+		{
+			if (auto pcb = meshPtrs.front()->queryBindable<Bind::PixelConstantBuffer<T>>())
+			{
+				ImGui::Text("Material");
+
+				ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&c.specularColor));
+
+				ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 1000.0f, "%f", 5.0f);
+
+				ImGui::ColorPicker3("Diff Color", reinterpret_cast<float*>(&c.materialColor));
+
+				pcb->update(gfx, c);
+				return true;
+			}
+		}
+		return false;
+	}
+
 private:
 	void addChild(std::unique_ptr<Node> pChild) noxnd;
 private:
@@ -52,13 +130,13 @@ private:
 class Model
 {
 public:
-	Model(Graphics& gfx, const std::string fileName);
+	Model(Graphics& gfx, const std::string& pathString, float scale = 1.0f);
 	void draw(Graphics& gfx) const noxnd;
-	void showWindow(const char* windowName = nullptr) noexcept;
+	void showWindow(Graphics& gfx,const char* windowName = nullptr) noexcept;
 	void setRootTransform(DirectX::FXMMATRIX tf) noexcept;
 	~Model() noexcept;
 private:
-	static std::unique_ptr<Mesh> parseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials);
+	static std::unique_ptr<Mesh> parseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, float scale);
 	std::unique_ptr<Node> parseNode(int& nextId, const aiNode& node) noexcept;
 private:
 	std::unique_ptr<Node> pRoot;

@@ -18,7 +18,7 @@ public:
 	virtual DirectX::XMMATRIX getTransformXM() const noexcept = 0;
 	void draw(Graphics& gfx) const noxnd;
 	virtual ~Drawable() = default;
-protected:
+
 	template<class T>
 	T* queryBindable() noexcept
 	{
@@ -27,6 +27,7 @@ protected:
 				return pt;
 		return nullptr;
 	}
+protected:
 	void addBind(std::shared_ptr<Bind::Bindable> bind) noxnd;
 private:
 	const Bind::IndexBuffer* pIndexBuffer = nullptr;
