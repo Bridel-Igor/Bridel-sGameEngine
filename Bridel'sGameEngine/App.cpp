@@ -28,18 +28,16 @@ App::App(const std::string& commandLine)
 		int nArgs;
 		const auto pLineW = GetCommandLineW();
 		const auto pArgs = CommandLineToArgvW(pLineW, &nArgs);
-		if (nArgs >= 4 && std::wstring(pArgs[1]) == L"--ntwerk-rotx180")
+		if (nArgs >= 3 && std::wstring(pArgs[1]) == L"--twerk-objnorm")
 		{
 			const std::wstring pathInWide = pArgs[2];
 			const std::wstring pathOutWide = pArgs[3];
-			NormalMapTwerker::rotateXAxis180(
-				std::string(pathInWide.begin(), pathInWide.end()),
-				std::string(pathOutWide.begin(), pathOutWide.end())
+			NormalMapTwerker::flipYAllNormalMapsInObj(std::string(pathOutWide.begin(), pathOutWide.end())
 			);
 			throw std::runtime_error("Normal map processed succesfully. Just kidding about that whole runtime error thing.");
 		}
 	}
-	wall1.setRootTransform(dx::XMMatrixTranslation(-12.0f, 12.0f, 0.0f));
+	/*wall1.setRootTransform(dx::XMMatrixTranslation(-12.0f, 12.0f, 0.0f));
 	wall2.setRootTransform(dx::XMMatrixTranslation(12.0f, 12.0f, 0.0f));
 	tp1.setPos({ 12.0f, 0.0f, -12.0f });
 	tp2.setPos({ -12.0f, 0.0f, -12.0f });
@@ -47,8 +45,8 @@ App::App(const std::string& commandLine)
 	tp2.setRotation(PI/2.0f, 0, 0);
 	gobber.setRootTransform(dx::XMMatrixTranslation(-9.0f, 16.5f, -4.0f));
 	muro.setRootTransform(dx::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
-	nano.setRootTransform(dx::XMMatrixTranslation(11.0f, 0.0f, -4.0f));
-	wnd.gfx().setProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 100.0f));
+	nano.setRootTransform(dx::XMMatrixTranslation(11.0f, 0.0f, -4.0f));*/
+	wnd.gfx().setProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 400.0f));
 }
 
 int App::go()
@@ -85,13 +83,14 @@ void App::doFrame()
 	light.bind(wnd.gfx(), cam.getMatrix());
 
 	// render geometry
-	wall1.draw(wnd.gfx());
+	/*wall1.draw(wnd.gfx());
 	wall2.draw(wnd.gfx());
 	tp1.draw(wnd.gfx());
 	tp2.draw(wnd.gfx());
 	nano.draw(wnd.gfx());
 	gobber.draw(wnd.gfx());
-	muro.draw(wnd.gfx());
+	muro.draw(wnd.gfx());*/
+	sponza.draw(wnd.gfx());
 	light.draw(wnd.gfx());
 
 	while (const auto e = wnd.kbd.readKey())
@@ -143,12 +142,13 @@ void App::doFrame()
 	cam.spawnControlWindow();
 	light.spawnControlWindow();
 	showImguiDemoWindow();
-	gobber.showWindow(wnd.gfx(), "Gobber");
-	muro.showWindow(wnd.gfx(), "Muro");
-	wall1.showWindow(wnd.gfx(), "Wall_1");
-	wall2.showWindow(wnd.gfx(), "Wall_2");
-	//tp1.spawnControlWindow(wnd.gfx());
-	nano.showWindow(wnd.gfx(), "Nano");
+	//gobber.showWindow(wnd.gfx(), "Gobber");
+	//muro.showWindow(wnd.gfx(), "Muro");
+	//wall1.showWindow(wnd.gfx(), "Wall_1");
+	//wall2.showWindow(wnd.gfx(), "Wall_2");
+	////tp1.spawnControlWindow(wnd.gfx());
+	//nano.showWindow(wnd.gfx(), "Nano");
+	sponza.showWindow(wnd.gfx(), "Sponza");
 	//present
 	wnd.gfx().endFrame();
 }

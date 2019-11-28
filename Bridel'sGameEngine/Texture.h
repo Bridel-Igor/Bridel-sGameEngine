@@ -15,6 +15,8 @@ namespace Bind
 		std::string getUID() const noexcept override;
 		bool hasAlpha() const noexcept;
 	private:
+		static UINT calculateNumberOfMipLevels(UINT width, UINT height) noexcept;
+
 		unsigned int slot;
 	protected:
 		bool alpha = false;
