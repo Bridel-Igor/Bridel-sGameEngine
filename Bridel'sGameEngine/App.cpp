@@ -46,6 +46,8 @@ App::App(const std::string& commandLine)
 	gobber.setRootTransform(dx::XMMatrixTranslation(-9.0f, 16.5f, -4.0f));
 	muro.setRootTransform(dx::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
 	nano.setRootTransform(dx::XMMatrixTranslation(11.0f, 0.0f, -4.0f));*/
+	bluePlane.setPos(cam.getPos());
+	redPlane.setPos(cam.getPos());
 	wnd.gfx().setProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 400.0f));
 }
 
@@ -92,6 +94,9 @@ void App::doFrame()
 	muro.draw(wnd.gfx());*/
 	sponza.draw(wnd.gfx());
 	light.draw(wnd.gfx());
+
+	bluePlane.draw(wnd.gfx());
+	redPlane.draw(wnd.gfx());
 
 	while (const auto e = wnd.kbd.readKey())
 	{
@@ -149,6 +154,8 @@ void App::doFrame()
 	////tp1.spawnControlWindow(wnd.gfx());
 	//nano.showWindow(wnd.gfx(), "Nano");
 	sponza.showWindow(wnd.gfx(), "Sponza");
+	bluePlane.spawnControlWindow(wnd.gfx(), "Blue Plane");
+	redPlane.spawnControlWindow(wnd.gfx(), "Red Plane");
 	//present
 	wnd.gfx().endFrame();
 }

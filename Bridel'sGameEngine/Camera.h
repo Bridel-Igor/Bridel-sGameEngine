@@ -10,6 +10,7 @@ public:
 	void reset() noexcept;
 	void rotate(float dx, float dy) noexcept;
 	void translate(DirectX::XMFLOAT3 translation) noexcept;
+	DirectX::XMFLOAT3 getPos() const noexcept;
 private:
 	DirectX::XMFLOAT3 pos;
 	float pitch;

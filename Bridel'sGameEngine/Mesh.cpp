@@ -585,6 +585,8 @@ std::unique_ptr<Mesh> Model::parseMesh(Graphics& gfx, const aiMesh& mesh, const 
 	// of signaling 2-sidedness to be more general in the future
 	bindablePtrs.push_back(Rasterizer::resolve(gfx, hasAlphaDiffuse));
 
+	bindablePtrs.push_back(Blender::resolve(gfx, false));
+
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 }
 
