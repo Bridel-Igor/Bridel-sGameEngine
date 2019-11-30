@@ -125,7 +125,7 @@ void Node::addChild(std::unique_ptr<Node> pChild) noxnd
 }
 
 
-// Model
+// ModelWindow
 class ModelWindow // pImpl idiom, only defined in this .cpp
 {
 public:
@@ -141,8 +141,6 @@ public:
 			ImGui::NextColumn();
 			if (pSelectedNode != nullptr)
 			{
-				//auto& transform = transforms[pSelectedNode->getId()];
-
 				const auto id = pSelectedNode->getId();
 				auto i = transforms.find(id);
 				if (i == transforms.end())
@@ -203,6 +201,8 @@ private:
 	std::unordered_map<int, TransformParameters> transforms;
 };
 
+
+// Model
 Model::Model(Graphics& gfx, const std::string& pathString, const float scale)
 	:
 	pWindow(std::make_unique<ModelWindow>())

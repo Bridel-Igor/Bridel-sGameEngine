@@ -105,9 +105,6 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Surface.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\GDIPlusManager.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Sampler.cpp">
       <Filter>Исходные файлы\Bindable</Filter>
     </ClCompile>
@@ -249,9 +246,6 @@
       <Filter>Файлы заголовков\Drawable\Primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Surface.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\GDIPlusManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Sampler.h">

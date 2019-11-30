@@ -4,7 +4,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	try 
 	{
-		return App{lpCmdLine}.go();
+		return App{}.go();
 	}
 	catch (const ExceptionFinder & e)
 	{

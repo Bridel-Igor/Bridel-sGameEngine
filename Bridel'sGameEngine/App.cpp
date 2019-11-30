@@ -5,47 +5,23 @@
 #include <algorithm>
 #include "MathInclude.h"
 #include "Surface.h"
-#include "GDIPlusManager.h"
 #include "ImGui/imgui.h"
 #include "VertexBuffer.h"
 #include "NormalMapTwerker.h"
 #include <shellapi.h>
-#include "DirectXTex.h"
+#include "DirectXTex.h" // delete?
 
-#pragma comment (lib, "assimp-vc141-mtd.lib")
+#pragma comment (lib, "assimp-vc141-mtd.lib")  // TODO: rearrange files in folders and add it to dependencies in prop
 
 namespace dx = DirectX;
 
-GDIPlusManager gdipm;
-
-App::App(const std::string& commandLine)
+App::App()
 	:
-	commandLine(commandLine),
 	wnd(1280, 720, "Bridel'sGameEngine"),
 	light(wnd.gfx())
 {
-	auto scratch = DirectX::ScratchImage{};
-	DirectX::LoadFromWICFile(L"Images\\brickwall.jpg", DirectX::WIC_FLAGS_NONE, nullptr, scratch);
-	auto image = scratch.GetImage(0, 0, 0);
-	auto a = image->pixels[0];
-	auto b = image->pixels[1];
-	auto c = image->pixels[2];
-	auto d = image->pixels[3];
-
-	if (this->commandLine != "")
-	{
-		int nArgs;
-		const auto pLineW = GetCommandLineW();
-		const auto pArgs = CommandLineToArgvW(pLineW, &nArgs);
-		if (nArgs >= 3 && std::wstring(pArgs[1]) == L"--twerk-objnorm")
-		{
-			const std::wstring pathInWide = pArgs[2];
-			const std::wstring pathOutWide = pArgs[3];
-			NormalMapTwerker::flipYAllNormalMapsInObj(std::string(pathOutWide.begin(), pathOutWide.end())
-			);
-			throw std::runtime_error("Normal map processed succesfully. Just kidding about that whole runtime error thing.");
-		}
-	}
+	muro.setRootTransform(dx::XMMatrixRotationRollPitchYaw(0.0f, PI, 0.0f) * dx::XMMatrixTranslation(0.0f, 0.0f, -6.5f));
+	nano.setRootTransform(dx::XMMatrixTranslation(0.0f, 0.0f, 10.5f));
 	/*wall1.setRootTransform(dx::XMMatrixTranslation(-12.0f, 12.0f, 0.0f));
 	wall2.setRootTransform(dx::XMMatrixTranslation(12.0f, 12.0f, 0.0f));
 	tp1.setPos({ 12.0f, 0.0f, -12.0f });
@@ -53,10 +29,9 @@ App::App(const std::string& commandLine)
 	tp1.setRotation(PI/2.0f, 0, 0);
 	tp2.setRotation(PI/2.0f, 0, 0);
 	gobber.setRootTransform(dx::XMMatrixTranslation(-9.0f, 16.5f, -4.0f));
-	muro.setRootTransform(dx::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
-	nano.setRootTransform(dx::XMMatrixTranslation(11.0f, 0.0f, -4.0f));*/
+	
 	bluePlane.setPos(cam.getPos());
-	redPlane.setPos(cam.getPos());
+	redPlane.setPos(cam.getPos());*/
 	wnd.gfx().setProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 400.0f));
 }
 
@@ -98,14 +73,14 @@ void App::doFrame()
 	wall2.draw(wnd.gfx());
 	tp1.draw(wnd.gfx());
 	tp2.draw(wnd.gfx());
+	gobber.draw(wnd.gfx());*/
 	nano.draw(wnd.gfx());
-	gobber.draw(wnd.gfx());
-	muro.draw(wnd.gfx());*/
+	muro.draw(wnd.gfx());
 	sponza.draw(wnd.gfx());
 	light.draw(wnd.gfx());
 
-	bluePlane.draw(wnd.gfx());
-	redPlane.draw(wnd.gfx());
+	//bluePlane.draw(wnd.gfx());
+	//redPlane.draw(wnd.gfx());
 
 	while (const auto e = wnd.kbd.readKey())
 	{
@@ -157,14 +132,14 @@ void App::doFrame()
 	light.spawnControlWindow();
 	showImguiDemoWindow();
 	//gobber.showWindow(wnd.gfx(), "Gobber");
-	//muro.showWindow(wnd.gfx(), "Muro");
+	muro.showWindow(wnd.gfx(), "Muro");
 	//wall1.showWindow(wnd.gfx(), "Wall_1");
 	//wall2.showWindow(wnd.gfx(), "Wall_2");
-	////tp1.spawnControlWindow(wnd.gfx());
-	//nano.showWindow(wnd.gfx(), "Nano");
+	//tp1.spawnControlWindow(wnd.gfx());
+	nano.showWindow(wnd.gfx(), "Nano");
 	sponza.showWindow(wnd.gfx(), "Sponza");
-	bluePlane.spawnControlWindow(wnd.gfx(), "Blue Plane");
-	redPlane.spawnControlWindow(wnd.gfx(), "Red Plane");
+	//bluePlane.spawnControlWindow(wnd.gfx(), "Blue Plane");
+	//redPlane.spawnControlWindow(wnd.gfx(), "Red Plane");
 	//present
 	wnd.gfx().endFrame();
 }
