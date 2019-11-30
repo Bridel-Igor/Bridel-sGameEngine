@@ -10,6 +10,7 @@
 #include "VertexBuffer.h"
 #include "NormalMapTwerker.h"
 #include <shellapi.h>
+#include "DirectXTex.h"
 
 #pragma comment (lib, "assimp-vc141-mtd.lib")
 
@@ -23,6 +24,14 @@ App::App(const std::string& commandLine)
 	wnd(1280, 720, "Bridel'sGameEngine"),
 	light(wnd.gfx())
 {
+	auto scratch = DirectX::ScratchImage{};
+	DirectX::LoadFromWICFile(L"Images\\brickwall.jpg", DirectX::WIC_FLAGS_NONE, nullptr, scratch);
+	auto image = scratch.GetImage(0, 0, 0);
+	auto a = image->pixels[0];
+	auto b = image->pixels[1];
+	auto c = image->pixels[2];
+	auto d = image->pixels[3];
+
 	if (this->commandLine != "")
 	{
 		int nArgs;
