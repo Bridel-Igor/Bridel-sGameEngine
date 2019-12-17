@@ -10,6 +10,7 @@
 #include "NormalMapTwerker.h"
 #include <shellapi.h>
 #include "DirectXTex.h" // delete?
+#include "Testing.h"
 
 #pragma comment (lib, "assimp-vc141-mtd.lib")  // TODO: rearrange files in folders and add it to dependencies in prop
 
@@ -20,6 +21,8 @@ App::App()
 	wnd(1280, 720, "Bridel'sGameEngine"),
 	light(wnd.gfx())
 {
+	TestDynamicConstant();
+
 	muro.setRootTransform(dx::XMMatrixRotationRollPitchYaw(0.0f, PI, 0.0f) * dx::XMMatrixTranslation(0.0f, 0.0f, -6.5f));
 	nano.setRootTransform(dx::XMMatrixTranslation(0.0f, 0.0f, 10.5f));
 	/*wall1.setRootTransform(dx::XMMatrixTranslation(-12.0f, 12.0f, 0.0f));
@@ -76,7 +79,7 @@ void App::doFrame()
 	gobber.draw(wnd.gfx());*/
 	nano.draw(wnd.gfx());
 	muro.draw(wnd.gfx());
-	sponza.draw(wnd.gfx());
+	//sponza.draw(wnd.gfx());
 	light.draw(wnd.gfx());
 
 	//bluePlane.draw(wnd.gfx());
@@ -137,7 +140,7 @@ void App::doFrame()
 	//wall2.showWindow(wnd.gfx(), "Wall_2");
 	//tp1.spawnControlWindow(wnd.gfx());
 	nano.showWindow(wnd.gfx(), "Nano");
-	sponza.showWindow(wnd.gfx(), "Sponza");
+	//sponza.showWindow(wnd.gfx(), "Sponza");
 	//bluePlane.spawnControlWindow(wnd.gfx(), "Blue Plane");
 	//redPlane.spawnControlWindow(wnd.gfx(), "Red Plane");
 	//present

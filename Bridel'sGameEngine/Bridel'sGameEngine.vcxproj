@@ -110,6 +110,7 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Drawable.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\dxerr.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DxgiInfoManager.cpp" />
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DynamicConstant.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ExceptionFinder.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Graphics.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ImGuiManager.cpp" />
@@ -122,6 +123,7 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\IndexBuffer.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\InputLayout.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Keyboard.cpp" />
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\LayoutCodex.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Mesh.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Mouse.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\NormalMapTwerker.cpp" />
@@ -132,6 +134,7 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\SolidSphere.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Surface.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestCube.cpp" />
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Testing.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestPlane.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Texture.cpp" />
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Timer.cpp" />
@@ -150,11 +153,15 @@
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Bindable.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\BindableCodex.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Blender.h" />
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ConstantBuffersEx.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Cube.h" />
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DynamicConstant.h" />
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\LayoutCodex.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\NormalMapTwerker.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Plane.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Rasterizer.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestCube.h" />
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Testing.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TestPlane.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\TransformCbufDual.h" />
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\XMMatrixExtractor.h" />

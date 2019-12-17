@@ -168,6 +168,15 @@
     <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Rasterizer.cpp">
       <Filter>Исходные файлы\Bindable</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DynamicConstant.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\LayoutCodex.cpp">
+      <Filter>Исходные файлы\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Testing.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\WindowsInclude.h">
@@ -337,6 +346,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Rasterizer.h">
       <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\DynamicConstant.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\ConstantBuffersEx.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\LayoutCodex.h">
+      <Filter>Файлы заголовков\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bridel%27sGameEngine\Bridel%27sGameEngine\Testing.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -27,7 +27,7 @@ private:
 	float speed_factor = 1.0f;
 	Camera cam;
 	PointLight light;
-	Model sponza{ wnd.gfx(), "Models\\Sponza\\sponza.obj", 1.0f / 20.0f };
+	//Model sponza{ wnd.gfx(), "Models\\Sponza\\sponza.obj", 1.0f / 20.0f };
 	Model muro{ wnd.gfx(), "Models\\muro\\muro.obj", 4.0f };
 	Model nano{ wnd.gfx(), "Models\\nano_textured\\nanosuit.obj", 0.5f };
 	//TestPlane bluePlane{ wnd.gfx(), 6.0, {0.3f, 0.3f, 1.0f, 0.0f} };
